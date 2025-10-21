@@ -20,12 +20,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-q=cs--2n$#&t7(%v-ilp)rv10qr&33ybqbohybq^sxiea@6xdn'
+SECRET_KEY = '7qn3=@+@%9ntm-#z-+f-r_3*7vmuz+=kn=l4pp+&j5vprk-gxs'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = ['*']
-
 
 
 # Application definition
@@ -38,11 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # لإدارة الملفات الثابتة على Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -115,19 +114,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
 # مكان تجميع كل ملفات static قبل الرفع
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# لو عندك مجلدات static إضافية
+# مجلدات static داخل المشروع
 STATICFILES_DIRS = [
-    BASE_DIR / "static",  # هذا مجلد الملفات الأصلية عندك
+    BASE_DIR / "main" / "static",  # هذا مكان ملفاتك الحقيقية
 ]
+# استخدام WhiteNoise لضغط وتخزين ملفات static
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Default primary key field type

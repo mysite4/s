@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>هيدر مثل Clindo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li><a href="#">الرئيسية</a></li>
+    <li><a href="#">الخدمات</a></li>
+    <li><a href="#">عن الموقع</a></li>
+    <li><a href="#">تواصل معنا</a></li>
+  </ul>
+</nav>
+
+<header>
+  <div class="header-image">
+    <img src="{% static 'image/44.png' %}" alt="صورة شفافة">
+  </div>
+  <div class="header-content">
+    <div class="header-text">
+      <h1>Welcome to our dental clinic</h1>
+      <h3>we hope you benefit from our services</h3>
+    </div>
+    <div class="header-icon">
+      <img src="{% static 'image/r.png.png' %}" alt="ريم">
+    </div>
+  </div>
+</header>
+
+<!-- موجة -->
+<svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+  <defs>
+    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1976d2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0b1a5b;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#waveGradient)" d="M0,160L60,176C120,192,240,224,360,213.3C480,203,600,149,720,138.7C840,128,960,149,1080,160C1200,171,1320,160,1380,154.7L1440,149L1440,0L0,0Z"></path>
+</svg>
+
+<main>
+  <!-- قسم نبذة عنا -->
+  <div class="about-section">
+    <div class="about-image">
+      <img src="{% static 'image/9.webp' %}" alt="صورة طبيب أسنان">
+    </div>
+    <div class="about-text">
+      <h2>نبذة عنا</h2>
+      <p>
+        نسعى في عيادتنا إلى تقديم رعاية أسنان شاملة ومتكاملة لجميع أفراد العائلة، مع التركيز على الراحة، الجودة، والدقة في كل خطوة من خطوات العلاج.
+        نستخدم أحدث التقنيات الطبية وأفضل المواد لضمان نتائج تدوم طويلاً وتمنحكم ابتسامة صحية وجميلة.
+      </p>
+    </div>
+  </div>
+
+  <!-- قسم خدماتنا -->
+  <section class="services-section">
+    <h2>خدماتنا</h2>
+    <div class="services-container">
+      <div class="service-item">
+        <img src="{% static 'image/icon1.png' %}" alt="خدمة 1">
+        <p>تنظيف الأسنان</p>
+      </div>
+      <div class="service-item">
+        <img src="{% static 'image/icon2.png' %}" alt="خدمة 2">
+        <p>تبييض الأسنان</p>
+      </div>
+      <div class="service-item">
+        <img src="{% static 'image/icon3.png' %}" alt="خدمة 3">
+        <p>حشوات تجميلية</p>
+      </div>
+      <div class="service-item">
+        <img src="{% static 'image/icon4.png' %}" alt="خدمة 4">
+        <p>تركيب التقويم</p>
+      </div>
+      <div class="service-item">
+        <img src="{% static 'image/icon5.png' %}" alt="خدمة 5">
+        <p>زراعة الأسنان</p>
+      </div>
+      <div class="service-item">
+        <img src="{% static 'image/icon6.png' %}" alt="خدمة 6">
+        <p>خلع الأسنان</p>
+      </div>
+      <div class="service-item">
+        <img src="{% static 'image/icon7.png' %}" alt="خدمة 7">
+        <p>علاج اللثة</p>
+      </div>
+      <div class="service-item">
+        <img src="{% static 'image/icon8.png' %}" alt="خدمة 8">
+        <p>الفحص الدوري</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>

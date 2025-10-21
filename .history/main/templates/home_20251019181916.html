@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ناف بار متطور</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li><a href="#">الرئيسية</a></li>
+    <li><a href="#">الخدمات</a></li>
+    <li><a href="#">عن الموقع</a></li>
+    <li><a href="#">تواصل معنا</a></li>
+  </ul>
+</nav>
+
+<header>
+  <div class="header-icon">
+    <img src="{% static 'image/dentistry.png' %}" alt="ريم">
+  </div>
+  <div class="header-text"><h2>Welcome to our dental clinic</h2> <h5 style="color: rgb(20, 38, 94);">we hope you benefit from our services</h5><br></div>
+</header>
+
+<main>
+  <h2>محتوى الصفحة</h2>
+  <p>هذا مثال على هيدر وناف بار عملي ومتجاوب. النص على اليمين، والصورة على اليسار، والظل أزرق. التصميم عصري وودي.</p>
+</main>
+
+</body>
+</html>

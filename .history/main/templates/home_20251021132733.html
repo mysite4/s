@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام إدارة عيادات الأسنان</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<!-- نافبار -->
+<nav>
+  <ul>
+    <li><a href="#">الرئيسية</a></li>
+    <li><a href="#">الخدمات</a></li>
+    <li><a href="#">عن الموقع</a></li>
+    <li><a href="#">تواصل معنا</a></li>
+  </ul>
+</nav>
+
+<!-- الهيدر -->
+<header>
+  <div class="header-image">
+    <img src="{% static 'image/44.png' %}" alt="صورة شفافة">
+  </div>
+  <div class="header-content">
+    <div class="header-text">
+      <h1>Welcome to our dental clinic</h1>
+      <h3>we hope you benefit from our services</h3>
+    </div>
+    <div class="header-icon">
+      <img src="{% static 'image/r.png.png' %}" alt="ريم">
+    </div>
+  </div>
+</header>
+
+<!-- الموجة -->
+<svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+  <defs>
+    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1976d2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0b1a5b;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#waveGradient)" d="M0,160L60,176C120,192,240,224,360,213.3C480,203,600,149,720,138.7C840,128,960,149,1080,160C1200,171,1320,160,1380,154.7L1440,149L1440,0L0,0Z"></path>
+</svg>
+
+<!-- قسم الخدمات -->
+<section class="services-section">
+  <h2>خدماتنا</h2>
+
+  <!-- الصف الأول -->
+  <div class="services-container">
+    <div class="service-item">
+      <img src="{% static 'image/8.png' %}" alt="خدمة 1">
+      <p>حجز المواعيد</p>
+    </div>
+    <div class="service-item">
+      <img src="{% static 'image/7.png' %}" alt="خدمة 2">
+      <p>سجل المرضى</p>
+    </div>
+    <div class="service-item">
+      <img src="{% static 'image/2.png' %}" alt="خدمة 3">
+      <p>إدارة الفواتير</p>
+    </div>
+    <div class="service-item">
+      <img src="{% static 'image/4.png' %}" alt="خدمة 4">
+      <p>إدارة المواعيد</p>
+    </div>
+  </div>
+
+  <!-- الصف الثاني -->
+  <div class="services-container" id="extraRow1">
+    <div class="service-item">
+      <img src="{% static 'image/6.png' %}" alt="خدمة 5">
+      <p>تنبيهات للمتابعة</p>
+    </div>
+    <div class="service-item">
+      <img src="{% static 'image/3.png' %}" alt="خدمة 6">
+      <p>إحصائيات الإدارة</p>
+    </div>
+    <div class="service-item">
+      <img src="{% static 'image/5.png' %}" alt="خدمة 7">
+      <p>رسائل للمرضى</p>
+    </div>
+    <div class="service-item">
+      <img src="{% static 'image/1.png' %}" alt="خدمة 8">
+      <p>خدمة الطوارئ</p>
+    </div>
+  </div>
+
+  <!-- الصف الثالث -->
+  <div class="services-container" id="extraRow2">
+    <div class="service-item">
+      <img src="{% static 'image/x1.png' %}" alt="خدمة 9">
+      <p>إدارة الأطباء</p>
+    </div>
+    <div class="service-item">
+      <img src="{% static 'image/x2.png' %}" alt="خدمة 10">
+      <p>تقارير شهرية</p>
+    </div>
+    <div class="service-item">
+      <img src="{% static 'image/x3.png' %}" alt="خدمة 11">
+      <p>نظام النسخ الاحتياطي</p>
+    </div>
+    <div class="service-item">
+      <img src="{% static 'image/x4.png' %}" alt="خدمة 12">
+      <p>إدارة الموظفين</p>
+    </div>
+  </div>
+
+  <!-- الزر الجديد -->
+  <a href="/booking/" class="booking-btn">احجز الآن</a>
+
+</section>
+
+</body>
+</html>

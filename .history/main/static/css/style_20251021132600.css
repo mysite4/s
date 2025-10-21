@@ -1,0 +1,116 @@
+body {
+  font-family: 'Cairo', sans-serif;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+  background-color: #fff;
+}
+
+/* نافبار */
+nav {
+  background: #0b1a5b;
+  padding: 15px 0;
+  text-align: center;
+}
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+nav li {
+  display: inline-block;
+  margin: 0 15px;
+}
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+/* الهيدر */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 80px 60px;
+  background-color: #ffffff;
+}
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+.header-text h1 {
+  font-size: 32px;
+  color: #0b1a5b;
+}
+.header-text h3 {
+  font-size: 20px;
+  color: #1976d2;
+  margin-top: 10px;
+}
+.header-image img {
+  max-width: 250px;
+}
+
+/* الموجة */
+.waves {
+  display: block;
+  margin-top: -5px;
+}
+
+/* الخدمات */
+.services-section {
+  text-align: center;
+  padding: 60px 20px;
+}
+.services-section h2 {
+  color: #0b1a5b;
+  margin-bottom: 40px;
+  font-size: 28px;
+}
+.services-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+.service-item {
+  width: 220px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+.service-item:hover {
+  transform: scale(1.08);
+}
+.service-item img {
+  width: 100px;
+  height: 100px;
+}
+.service-item p {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+/* زر الحجز */
+.booking-btn {
+  display: inline-block;
+  margin-top: 50px;
+  padding: 14px 40px;
+  background: linear-gradient(135deg, #1976d2, #0b1a5b);
+  color: #fff;
+  font-size: 18px;
+  border-radius: 30px;
+  text-decoration: none;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+.booking-btn:hover {
+  background: linear-gradient(135deg, #0b1a5b, #1976d2);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+.booking-btn:active {
+  transform: translateY(0);
+}

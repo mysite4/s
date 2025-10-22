@@ -156,7 +156,7 @@ header {
 .services-section h2 {
   font-size: 32px;
   margin-bottom: 30px;
-  color: #0e173f;
+  color: #070e2e;
 }
 
 .services-container {
@@ -173,18 +173,14 @@ header {
 }
 
 .service-item img {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   margin-bottom: 10px;
 }
 
 .service-item p {
-  font-size: 10px;
+  font-size: 16px;
   color: #63a5d1;
-}
-
-.service-item h3 {
-  color: #070e2e;
 }
 
 /* محتوى الصفحة */

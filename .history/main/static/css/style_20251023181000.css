@@ -345,35 +345,19 @@ body {
     width: 80%;
     max-width: 800px;
     box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3); /* ظل أزرق فاتح */
-    border-radius: 15px;
+    border-radius: 10px;
     overflow: hidden;
-    background-color: #e6f2ff; /* خلفية خفيفة للصور */
-    padding: 20px 0;
   }
 
   .slides {
     display: flex;
     width: 600%; /* 6 صور */
     transition: transform 0.5s ease-in-out;
-    align-items: center;
   }
 
-  .slide-item {
-    width: calc(100% / 6);
-    text-align: center;
-    padding: 0 5px;
-    box-sizing: border-box;
-  }
-
-  .slide-item img {
+  .slides img {
     width: 100%;
-    border-radius: 15px; /* الحواف مستديرة */
-  }
-
-  .slide-item p {
-    margin-top: 5px;
-    font-size: 14px;
-    color: #007bff;
+    border-radius: 10px;
   }
 
   .navigation {
@@ -397,16 +381,4 @@ body {
 
   .prev:hover, .next:hover {
     background-color: rgba(0,123,255,0.9);
-  }
-
-  @media (max-width: 768px) {
-    .slide-item {
-      width: calc(100% / 2);
-    }
-  }
-
-  @media (max-width: 480px) {
-    .slide-item {
-      width: 100%;
-    }
   }

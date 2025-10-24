@@ -278,6 +278,7 @@ main {
   background: linear-gradient(to right, #0b1a5b, #1976d2);
   transform: scale(1.05);
 }
+
 /* قسم الأطباء */
 .doctors-section {
   padding: 60px 0;
@@ -299,89 +300,32 @@ main {
   text-align: center;
 }
 
-/* شكل بطاقة الطبيب */
-.doctors-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-}
-
+/* شكل الطبيب */
 .doctor-card {
-  background: #f9f9f9;
-  border-radius: 15px;
-  padding: 20px;
-  width: 250px;
+  background: none;
+  box-shadow: none;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
 }
 
 .doctor-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
 .doctor-img img {
-  width: 120px;
-  height: 120px;
+  width: 160px;
+  height: 160px;
   object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   border: 3px solid #1976d2;
 }
 
-.doctor-info h3 {
+.doctor-name {
   font-weight: 600;
   color: #0b1a5b;
   font-size: 18px;
-  margin-bottom: 5px;
 }
-
-.doctor-info p {
-  font-size: 14px;
-  color: #447296;
-  margin-bottom: 15px;
-  line-height: 1.4;
-}
-
-/* زر الحجز */
-.book-doctor-btn {
-  display: inline-block;
-  background: linear-gradient(to right, #1976d2, #0b1a5b);
-  color: #fff;
-  padding: 10px 25px;
-  border-radius: 30px;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: bold;
-  transition: 0.3s ease;
-}
-
-.book-doctor-btn:hover {
-  background: linear-gradient(to right, #0b1a5b, #1976d2);
-  transform: scale(1.05);
-}
-
-/* Media Queries للشاشات الصغيرة */
-@media (max-width: 992px) {
-  .doctors-container {
-    gap: 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .doctor-card {
-    width: 45%;
-  }
-}
-
-@media (max-width: 480px) {
-  .doctor-card {
-    width: 100%;
-  }
-}
-
 
 /* الأسهم */
 .swiper-button-next, .swiper-button-prev {

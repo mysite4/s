@@ -113,7 +113,7 @@ header {
   align-items: center;
   max-width: 1200px;
   margin: 50px auto;
-  gap: 20px;
+  gap: 50px; /* زيادة المسافة بين الصورة والنص */
 }
 
 .about-image, .about-text {
@@ -126,12 +126,12 @@ header {
   height: auto;
   border-radius: 10px;
   border: 5px solid #083d75;
-  margin: 0 10px 0 0; /* top right bottom left */
+  margin: 0; /* إزالة الهوامش القديمة */
 }
-
 
 .about-text {
   text-align: right;
+  padding-left: 20px; /* مسافة داخلية بين النص والصورة */
 }
 
 .about-text h2 {
@@ -232,6 +232,7 @@ main {
 
   .about-text {
     text-align: center;
+    padding-left: 0;
   }
 
   .about-image img {

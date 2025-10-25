@@ -423,13 +423,6 @@ main {
 }
 
 /* ====== Footer ====== */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  box-sizing: border-box;
-}
-
 footer {
   width: 100%;
   background: linear-gradient(to right, #0b1a5b, #1976d2);
@@ -439,6 +432,8 @@ footer {
   font-family: 'Cairo', sans-serif;
   margin: 0;
   box-sizing: border-box;
+  position: relative; /* يخليه في مكانه الطبيعي */
+  bottom: 0; /* يلتصق بأسفل الصفحة عند الحاجة */
 }
 
 

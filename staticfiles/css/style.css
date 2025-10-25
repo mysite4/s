@@ -341,6 +341,25 @@ main {
   line-height: 1.4;
 }
 
+/* زر الحجز */
+.book-doctor-btn {
+  display: inline-block;
+  background: linear-gradient(to right, #1976d2, #0b1a5b);
+  color: #fff;
+  padding: 10px 25px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.book-doctor-btn:hover {
+  background: linear-gradient(to right, #0b1a5b, #1976d2);
+  transform: scale(1.05);
+}
+
+
 /* الأسهم */
 .swiper-button-next, .swiper-button-prev {
   color: #1976d2;

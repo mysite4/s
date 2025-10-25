@@ -1,8 +1,9 @@
 /* إعدادات عامة */
 html, body {
-  height: 100%; /* بدل min-height */
   margin: 0;
   padding: 0;
+  width: 100%;
+  min-height: 100%; /* مهم ليكون الفوتر دائمًا في الأسفل */
   font-family: 'Cairo', sans-serif;
   background-color: #f9f9f9;
   display: flex;
@@ -212,7 +213,7 @@ header {
 main {
   flex: 1; /* ياخذ المساحة المتبقية بين الهيدر والفوتر */
   padding: 30px 50px;
-  margin-top: 80px; /* ارتفاع النافبار */
+  margin-top: 20px;
 }
 
 /* Media Queries */

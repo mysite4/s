@@ -428,13 +428,14 @@ main {
 
 /* ====== Footer ====== */
 footer {
-  width: 100% !important;
+  width: 100%;
   background: linear-gradient(to right, #0b1a5b, #1976d2);
   color: #fff;
-  padding: 50px 20px 30px;
+  padding: 0 0 0 0 !important;
   text-align: center;
   font-family: 'Cairo', sans-serif;
-  margin: 0 0 0 0 !important;
+  margin-top: auto; /* مهم جدا ليكون دائمًا في الأسفل */
+  box-sizing: border-box;
 }
 
 .footer-container {

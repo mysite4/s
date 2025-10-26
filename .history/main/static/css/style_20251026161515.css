@@ -427,7 +427,7 @@ main {
 }
 
 footer {
-  width: auto;
+  width: 1200px;
   background: linear-gradient(to right, #0b1a5b, #1976d2);
   color: #fff;
   padding: 40px 20px 20px;

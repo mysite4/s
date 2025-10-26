@@ -1,23 +1,16 @@
-/* ====== إعدادات عامة ====== */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
+/* إعدادات عامة */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100%; /* مهم ليكون الفوتر دائمًا في الأسفل */
   font-family: 'Cairo', sans-serif;
   background-color: #f9f9f9;
   display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
+  flex-direction: column; /* يتيح توزيع المحتوى بين الهيدر والفوتر */
 }
 
-/* ====== Navbar ====== */
+/* Navbar */
 nav {
   width: 100%;
   background-color: #ffffff;
@@ -53,10 +46,10 @@ nav ul li a:hover {
   border-bottom: 3px solid #007bff;
 }
 
-/* ====== صورة شفافة أسفل النافبار ====== */
+/* صورة شفافة أسفل النافبار */
 .header-image {
   width: 100%;
-  margin-top: 60px;
+  margin-top: 60px; /* لتجنب تغطية النافبار */
 }
 
 .header-image img {
@@ -65,35 +58,37 @@ nav ul li a:hover {
   display: block;
 }
 
-/* ====== Header ====== */
+/* Header */
 header {
-  width: 100vw;
   position: relative;
+  width: 100%;
+  min-height: 200px;
   overflow: hidden;
   background: linear-gradient(to left, #0b1a5b, #1976d2);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 60px 0;
-  margin-left: calc(-50vw + 50%);
+  padding: 20px 0 0 0;
 }
 
-.header-inner {
-  width: 100%;
-  max-width: 1200px;
-  padding: 0 20px;
+.header-content {
   display: flex;
-  flex-direction: row-reverse; /* عكس الترتيب: الصورة يسار والنص يمين */
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px 50px;
+  margin-top: 5px;
 }
 
 .header-text {
   color: white;
   max-width: 50%;
-  text-align: right;
-  line-height: 1.5;
+  text-align: center;
+  line-height: 1.4;
+  padding: 40px;
 }
 
 .header-text h1 {
@@ -108,76 +103,80 @@ header {
 }
 
 .header-icon img {
-  width: 100%;
-  max-width: 450px;
+  width: 500px;
   height: auto;
   border-radius: 15px;
 }
 
-/* ====== قسم عن ====== */
 .about-section {
-  width: 100vw;
-  background: #ffffff;
-  margin-left: calc(-50vw + 50%);
-  padding: 60px 0;
-}
-
-.about-inner {
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 40px;
-  text-align: center;
+  margin: 20px auto;
+  text-align: center; /* العنوان في الوسط */
 }
 
-.about-inner h2 {
+.about-section p {
+  color: #447296;
+}
+
+.about-section h2 {
   font-size: 28px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   color: #0b1a5b;
 }
 
 .about-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* النص على اليسار والصورة على اليمين */
   align-items: center;
-  gap: 30px;
+  gap: 20px; /* مسافة مناسبة بين النص والصورة */
   flex-wrap: wrap;
 }
 
 .about-text {
   flex: 1 1 55%;
+  text-align: right;
   font-size: 16px;
-  line-height: 1.8;
-  text-align: left;
-  color: #447296;
+  line-height: 1.6;
 }
 
 .about-image {
   flex: 1 1 40%;
-  text-align: right;
+  text-align: center;
 }
 
 .about-image img {
   width: 100%;
-  max-width: 300px;
-  border-radius: 12px;
+  max-width: 250px;
+  height: auto;
+  border-radius: 10px;
   border: 5px solid #083d75;
 }
 
-/* ====== قسم خدماتنا ====== */
+/* Media Queries للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .about-content {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .about-text, .about-image {
+    flex: 1 1 100%;
+    text-align: center;
+  }
+
+  .about-image img {
+    max-width: 200px;
+  }
+}
+
+/* قسم خدماتنا */
 .services-section {
-  width: 100vw;
-  background: #f8faff;
-  margin-left: calc(-50vw + 50%);
-  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 100px auto 50px auto;
   text-align: center;
 }
 
-.services-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.services-inner h2 {
+.services-section h2 {
   font-size: 32px;
   margin-bottom: 30px;
   color: #0e173f;
@@ -187,17 +186,13 @@ header {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 25px;
+  gap: 20px;
 }
 
 .service-item {
   flex: 1 1 22%;
   text-align: center;
   margin-bottom: 30px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .service-item img {
@@ -206,33 +201,79 @@ header {
   margin-bottom: 10px;
 }
 
-.service-item h3 {
-  color: #0e173f;
-}
-
 .service-item p {
   font-size: 15px;
   color: #447296;
 }
 
-/* ====== قسم الأطباء ====== */
-.doctors-section {
-  width: 100vw;
-  background: #fff;
-  margin-left: calc(-50vw + 50%);
-  padding: 60px 20px;
-  text-align: center;
+.service-item h3 {
+  color: #0e173f;
 }
 
-.doctors-inner {
-  max-width: 1200px;
-  margin: 0 auto;
+main {
+  flex: 1; /* ياخذ المساحة المتبقية بين الهيدر والفوتر */
+  padding: 30px 50px;
+  margin-top: 20px;
+}
+
+/* Media Queries */
+@media (max-width: 992px) {
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .header-text {
+    max-width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .header-icon img {
+    width: 80%;
+  }
+
+  nav ul {
+    justify-content: center;
+  }
+
+  .service-item {
+    flex: 1 1 45%;
+  }
+}
+
+@media (max-width: 600px) {
+  .service-item {
+    flex: 1 1 100%;
+  }
+
+  .about-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-text {
+    text-align: center;
+    padding-left: 0;
+  }
+
+  .about-image img {
+    max-width: 200px;
+  }
+}
+
+/* قسم الأطباء */
+.doctors-section {
+  padding: 60px 0;
+  background: #fff;
 }
 
 .doctors-section h2 {
   color: #0b1a5b;
   margin-bottom: 10px;
   font-size: 28px;
+  text-align: center;
 }
 
 .doctors-section .description {
@@ -240,9 +281,13 @@ header {
   max-width: 700px;
   margin: 0 auto 40px;
   line-height: 1.8;
+  text-align: center;
 }
 
+/* شكل الطبيب */
 .doctor-card {
+  background: none;
+  box-shadow: none;
   text-align: center;
   transition: transform 0.3s ease;
 }
@@ -260,7 +305,14 @@ header {
   border: 3px solid #1976d2;
 }
 
+.doctor-name {
+  font-weight: 600;
+  color: #0b1a5b;
+  font-size: 18px;
+}
+
 .doctor-info h3 {
+  font-weight: 600;
   color: #0b1a5b;
   font-size: 18px;
   margin-bottom: 5px;
@@ -270,8 +322,10 @@ header {
   font-size: 14px;
   color: #447296;
   margin-bottom: 15px;
+  line-height: 1.4;
 }
 
+/* زر الحجز */
 .book-doctor-btn {
   display: inline-block;
   background: linear-gradient(to right, #1976d2, #0b1a5b);
@@ -289,27 +343,38 @@ header {
   transform: scale(1.05);
 }
 
-/* ====== معرض الفريق ====== */
+/* الأسهم */
+.swiper-button-next, .swiper-button-prev {
+  color: #1976d2;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  width: 40px;
+  height: 40px;
+}
+
+.swiper-button-next:hover, .swiper-button-prev:hover {
+  background: #1976d2;
+  color: #fff;
+}
+
+.swiper-button-next::after, .swiper-button-prev::after {
+  font-size: 18px;
+}
+
 .team-gallery {
-  width: 100vw;
+  padding: 50px 20px;
   background-color: #f8f9ff;
-  margin-left: calc(-50vw + 50%);
-  padding: 60px 20px;
   text-align: center;
 }
 
-.team-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.team-inner h2 {
+.team-gallery h2 {
   font-size: 2rem;
   margin-bottom: 30px;
   color: #0b1a5b;
 }
 
-.team-inner p {
+.team-gallery p {
   font-size: 15px;
   margin-bottom: 30px;
   color: #447296;
@@ -325,6 +390,7 @@ header {
 
 .gallery-item img {
   width: 100%;
+  height: auto;
   display: block;
   transition: transform 0.5s ease;
 }
@@ -333,10 +399,14 @@ header {
   transform: scale(1.05);
 }
 
+/* الظل يغطي كامل الصورة ويختفي بشكل افتراضي */
 .overlay {
   position: absolute;
-  inset: 0;
-  background-color: rgba(173, 216, 230, 0.6);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(173, 216, 230, 0.6); /* أزرق فاتح */
   opacity: 0;
   transition: opacity 0.3s ease;
   display: flex;
@@ -345,43 +415,51 @@ header {
   border-radius: 12px;
 }
 
+.overlay-text {
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+  padding: 10px;
+}
+
 .gallery-item:hover .overlay {
   opacity: 1;
 }
 
-.overlay-text {
-  color: #fff;
-  font-size: 1rem;
-}
-
 /* ====== Footer ====== */
 footer {
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
+  width: 100% !important;
   background: linear-gradient(to right, #0b1a5b, #1976d2);
   color: #fff;
-  padding: 60px 20px 0;
+  padding: 50px 20px 30px;
+  text-align: center;
+  font-family: 'Cairo', sans-serif;
+  margin: 0 0 0 0 !important;
 }
 
-.footer-inner {
-  max-width: 1200px;
-  margin: 0 auto;
+.footer-container {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 40px;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  gap: 30px;
+  margin: 0;
+  padding: 0 20px;
 }
 
 .footer-col {
   flex: 1 1 250px;
-  min-width: 220px;
+  text-align: left;
+  max-width: 300px;
 }
 
 .footer-col h3 {
   color: #fff;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   font-size: 20px;
   border-bottom: 2px solid #fff;
+  display: inline-block;
   padding-bottom: 5px;
 }
 
@@ -434,51 +512,16 @@ footer {
   width: 100%;
   background: rgba(0,0,0,0.1);
   padding: 10px 0;
-  text-align: center;
 }
 
-/* ====== Media Queries ====== */
-@media (max-width: 992px) {
-  .header-inner {
+/* استجابة للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .footer-container {
     flex-direction: column;
     text-align: center;
   }
 
-  .header-text {
-    max-width: 100%;
-    margin-bottom: 20px;
+  .footer-col {
     text-align: center;
-  }
-
-  .header-icon img {
-    width: 80%;
-  }
-
-  .about-content {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .about-text {
-    text-align: center;
-  }
-
-  .service-item {
-    flex: 1 1 45%;
-  }
-
-  .footer-inner {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-@media (max-width: 600px) {
-  .service-item {
-    flex: 1 1 100%;
-  }
-
-  .about-image img {
-    max-width: 200px;
   }
 }

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+<div class="page-container fade-in">
+  <h1 class="page-title">📋 إدارة المهام</h1>
+
+  <div class="grid-container">
+    <div class="card">
+      <h3>إضافة مهمة جديدة</h3>
+      <p>إضافة مهام للأطباء أو موظفي الاستقبال.</p>
+      <button class="btn-main">إضافة مهمة</button>
+    </div>
+
+    <div class="card">
+      <h3>قائمة المهام</h3>
+      <p>عرض جميع المهام الجارية والمنجزة.</p>
+      <button class="btn-secondary">عرض القائمة</button>
+    </div>
+
+    <div class="card">
+      <h3>تتبع الإنجاز</h3>
+      <p>تعرف على حالة كل مهمة ومتابعة تقدمها.</p>
+      <button class="btn-alert">تتبع الآن</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

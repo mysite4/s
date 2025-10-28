@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+<div class="page-container fade-in">
+  <h1 class="page-title">🚨 خدمة الطوارئ</h1>
+
+  <div class="grid-container">
+    <div class="card">
+      <h3>بلاغ طارئ جديد</h3>
+      <p>تسجيل حالة طارئة جديدة ليتم التعامل معها فورًا.</p>
+      <button class="btn-main">تسجيل بلاغ</button>
+    </div>
+
+    <div class="card">
+      <h3>قائمة الطوارئ الحالية</h3>
+      <p>عرض جميع الحالات الطارئة التي لم تُغلق بعد.</p>
+      <button class="btn-secondary">عرض الحالات</button>
+    </div>
+
+    <div class="card">
+      <h3>سجل الطوارئ</h3>
+      <p>الرجوع إلى البلاغات السابقة لمعرفة الإجراءات المتخذة.</p>
+      <button class="btn-alert">عرض السجل</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

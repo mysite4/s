@@ -6,14 +6,11 @@
 
 <div class="page-container fade-in">
   <h1 class="page-title">🧑‍⚕️ إدارة المرضى</h1>
-  <p style="text-align:center; margin-bottom:30px; color:#555;">
-  هذه الصفحة تعرض سجل جميع المرضى المسجلين لدينا. 
-  يمكنك البحث عن أي مريض بسهولة للتحقق من تفاصيله ومعلوماته الشخصية عند الحاجة.
-</p>
 
-  <!-- تبويب واحد: قائمة المرضى -->
+  <!-- Tabs -->
   <div class="tabs">
     <button class="tab-btn active" data-tab="list">قائمة المرضى</button>
+    <button class="tab-btn" data-tab="add">إضافة مريض جديد</button>
   </div>
 
   <!-- قائمة المرضى -->
@@ -51,10 +48,20 @@
       </tbody>
     </table>
   </div>
+
+  <!-- إضافة مريض جديد -->
+  <div class="tab-content" id="add" style="display:none;">
+    <h2>إضافة مريض جديد</h2>
+    <form method="POST" style="max-width:500px; margin:0 auto; text-align:right;">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn-main">حفظ المريض</button>
+    </form>
+  </div>
 </div>
 
 <script>
-  // التبديل بين Tabs (رغم أننا لدينا تبويب واحد فقط الآن)
+  // التبديل بين Tabs
   const tabButtons = document.querySelectorAll('.tab-btn');
   const tabContents = document.querySelectorAll('.tab-content');
   tabButtons.forEach(btn => {

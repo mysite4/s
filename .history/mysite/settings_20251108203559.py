@@ -76,14 +76,13 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'clinc_ac',  # اسم قاعدة البيانات
-        'USER': 'clinc_ac_user',  # اسم المستخدم
-        'PASSWORD': 'eikSnLqSta7woypuMncqs2LRk8EVNZJc',  # كلمة المرور
-        'HOST': 'dpg-d47opoqli9vc738sp2qg-a.oregon-postgres.render.com',  # الـ hostname فقط
-        'PORT': '5432',  # بورت PostgreSQL
+        'NAME': 'clinc_ac',
+        'USER': 'clinc_ac_user',
+        'PASSWORD': 'eikSnLqSta7woypuMncqs2LRk8EVNZJc',
+        'HOST': 'dpg-d47opoqli9vc738sp2qg-a',
+        'PORT': '5432',
     }
 }
-
 
 
 

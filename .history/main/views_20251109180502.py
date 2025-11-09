@@ -81,30 +81,32 @@ def edit_appointment(request):
 
 
 from django.shortcuts import render
-from main.models import Patient, Appointment, Payment
-from django.utils.timezone import now
+from .models import Patient, Appointment, Payment
 
-def stats_view(request):
-    today = now().date()
-
-    # عدد المرضى الكلي
+def statistics(request):
+    # عدد المرضى
     total_patients = Patient.objects.count()
 
     # الزيارات اليومية (عدد المواعيد اليوم)
-    visits_today = Appointment.objects.filter(date=today).count()
+    from django.utils import timezone
+    today = timezone.now().date()
+    daily_visits = Appointment.objects.filter(date=today).count()
 
-    # الحجوزات الجديدة (مثلاً خلال آخر 7 أيام)
+    # الحجوزات الجديدة (مثلاً آخر أسبوع)
     from datetime import timedelta
-    week_ago = today - timedelta(days=7)
-    new_appointments = Appointment.objects.filter(created_at__date__gte=week_ago).count()
+    last_week = today - timedelta(days=7)
+    new_appointments = Appointment.objects.filter(date__gte=last_week).count()
 
-    # الإيرادات الأسبوعية
-    weekly_revenue = Payment.objects.filter(paid_at__date__gte=week_ago).aggregate(total=models.Sum('amount'))['total'] or 0
+    # الإيرادات الشهرية (مثلاً آخر شهر)
+    from django.db.models import Sum
+    last_month = today - timedelta(days=30)
+    monthly_revenue = Payment.objects.filter(date__gte=last_month).aggregate(total=Sum('amount'))['total'] or 0
 
     context = {
         'total_patients': total_patients,
-        'visits_today': visits_today,
+        'daily_visits': daily_visits,
         'new_appointments': new_appointments,
-        'weekly_revenue': weekly_revenue
+        'monthly_revenue': monthly_revenue,
     }
+
     return render(request, 'services/statistics.html', context)

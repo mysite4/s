@@ -16,8 +16,7 @@ class Patient(models.Model):
     phone = models.CharField(max_length=15)
     disease = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
-    notes = models.TextField(blank=True, null=True) 
-    
+     notes = models.TextField(blank=True, null=True) 
     def __str__(self):
         return self.name
 

@@ -24,11 +24,7 @@ def booking_page(request):
             # يتحقق إن المريض مش مكرر
             patient, created = Patient.objects.get_or_create(
                 name=patient_name,
-               defaults={
-              'phone': patient_phone,
-              'notes': patient_notes
-                }
-                
+                defaults={'phone': patient_phone}
             )
 
             return render(request, 'booking_success.html')

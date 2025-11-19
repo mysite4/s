@@ -3,8 +3,7 @@ from django.http import JsonResponse
 from django.utils import timezone
 from django.db.models import Sum
 from django.db.models.functions import ExtractMonth
-
-from .models import Appointment, Patient, Invoice, Notification
+from .models import Appointment, Patient, Notification, Invoice
 from .forms import AppointmentForm, PatientForm
 
 # الصفحة الرئيسية
@@ -17,12 +16,14 @@ def booking_page(request):
     if request.method == 'POST':
         form = AppointmentForm(request.POST)
         if form.is_valid():
-            appointment = form.save()
+            appointment = form.save()  # يخزن الموعد
 
+            # الحصول على الملاحظات من الفورم
             patient_name = form.cleaned_data['name']
             patient_phone = form.cleaned_data['phone']
             patient_notes = form.cleaned_data.get('message', '')
 
+            # إنشاء أو تحديث المريض لتخزين الملاحظات
             patient, created = Patient.objects.update_or_create(
                 name=patient_name,
                 defaults={
@@ -61,11 +62,14 @@ def patients_view(request):
 def accounting(request):
     return render(request, 'services/accounting.html')
 
+
 def reception(request):
     return render(request, 'services/reception.html')
 
+
 def tasks(request):
     return render(request, 'services/tasks.html')
+
 
 def emergency(request):
     return render(request, 'services/emergency.html')
@@ -86,9 +90,12 @@ def edit_appointment(request):
 
 # صفحة الإحصائيات (عدد المرضى + الحجوزات التي أُدخلت اليوم)
 def stats_view(request):
-    today = timezone.localdate()
+    today = timezone.localdate()  # تاريخ اليوم حسب المنطقة الزمنية
 
+    # عدد المرضى الكلي
     total_patients = Patient.objects.count()
+
+    # عدد الحجوزات التي تم إدخالها اليوم
     visits_today = Appointment.objects.filter(created_at__date=today).count()
 
     context = {
@@ -96,29 +103,28 @@ def stats_view(request):
         'visits_today': visits_today,
     }
 
-    print("📊 الإحصائيات تعمل بنجاح ✅")
+    print("📊 الإحصائيات تعمل بنجاح ✅")  # يظهر في التيرمنال لتأكيد التنفيذ
     return render(request, 'services/statistics.html', context)
 
 
-# صفحة التنبيهات
+# صفحة الإشعارات
 def notifications_page(request):
     notifications = Notification.objects.filter(is_active=True).order_by('-created_at')
     return render(request, 'services/notifications.html', {'notifications': notifications})
 
 
-# صفحة النظام المالي / لوحة المحاسبة
+# صفحة النظام المالي / لوحة التحكم بالمحاسبة
 def accounting_dashboard(request):
-    # استخرج الشهر لكل فاتورة واحسب المجموع
+    # استخراج الشهر من تاريخ الفاتورة ثم جمع المبالغ لكل شهر
     data = Invoice.objects.annotate(month=ExtractMonth('date')) \
                           .values('month') \
                           .annotate(total=Sum('amount')) \
                           .order_by('month')
 
     invoice_labels = [f"Month {item['month']}" for item in data]
-    income_data = [float(item['total']) for item in data]  # حول Decimal إلى float للـ JS
+    income_data = [item['total'] for item in data]
 
-    print("📊 Invoice Labels:", invoice_labels)
-    print("📊 Income Data:", income_data)
+    print("📊 بيانات المحاسبة:", invoice_labels, income_data)  # للتأكد من وجود بيانات
 
     return render(request, 'services/accounting.html', {
         'invoice_labels': invoice_labels,

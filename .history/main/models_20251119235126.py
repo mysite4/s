@@ -65,6 +65,6 @@ class AccountingItem(models.Model):
 
 class Invoice(models.Model):
     # الحقول هنا
-    number = models.CharField(max_length=100, default='0000')
+    number = models.CharField(max_length=100)
     date = models.DateField()
     ...

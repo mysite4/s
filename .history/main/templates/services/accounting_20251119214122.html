@@ -46,34 +46,41 @@
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<canvas id="incomeChart" style="width:100%; max-height:300px;"></canvas>
-
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+  const incomeChart = new Chart(document.getElementById('incomeChart'), {
+    type: 'line',
+    data: {
+      labels: {{ months|safe }},
+      datasets: [{
+        label: 'إيرادات الأشهر',
+        data: {{ income_data|safe }},
+        borderWidth: 2,
+        tension: 0.4,
+      }]
+    }
+  });
 
-        const incomeData = JSON.parse('{{ income_data|safe }}');  
-        const invoiceLabels = JSON.parse('{{ invoice_labels|safe }}');
+  const servicesChart = new Chart(document.getElementById('servicesChart'), {
+    type: 'doughnut',
+    data: {
+      labels: {{ top_services_labels|safe }},
+      datasets: [{
+        data: {{ top_services_values|safe }},
+        borderWidth: 1
+      }]
+    }
+  });
 
-        const ctx = document.getElementById('incomeChart').getContext('2d');
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: invoiceLabels,
-                datasets: [{
-                    label: "🧾 الإيرادات الشهرية",
-                    data: incomeData,
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                }
-            }
-        });
-    });
+  const profitChart = new Chart(document.getElementById('profitChart'), {
+    type: 'bar',
+    data: {
+      labels: ['الإيرادات', 'المصاريف', 'الربح'],
+      datasets: [{
+        data: [{{ total_income }}, {{ total_expenses }}, {{ net_profit }}],
+        borderWidth: 1
+      }]
+    }
+  });
 </script>
 
 {% endblock %}

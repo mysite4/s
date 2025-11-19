@@ -107,17 +107,54 @@ from .models import Notification
 def notifications_page(request):
     notifications = Notification.objects.filter(is_active=True).order_by('-created_at')
     return render(request, 'services/notifications.html', {'notifications': notifications})
+
 from django.shortcuts import render
-from django.db.models import Sum
-from .models import Invoice
+from django.db.models import Sum, Count
+from .models import Invoice, Expense, Service
+from datetime import datetime
 
 def accounting_dashboard(request):
-    data = Invoice.objects.values('date__month').annotate(total=Sum('amount'))
     
-    invoice_labels = [f"Month {item['date__month']}" for item in data]
-    income_data = [item['total'] for item in data]
+    # إجمالي الإيرادات
+    total_income = Invoice.objects.filter(paid=True).aggregate(Sum('amount'))['amount__sum'] or 0
 
-    return render(request, 'services/accounting.html', {
-        'invoice_labels': invoice_labels,
-        'income_data': income_data,
+    # إجمالي المصاريف
+    total_expenses = Expense.objects.aggregate(Sum('amount'))['amount__sum'] or 0
+
+    # صافي الربح
+    net_profit = total_income - total_expenses
+
+    # عدد الفواتير
+    invoice_count = Invoice.objects.count()
+
+    # الإيرادات حسب الأشهر
+    invoices = Invoice.objects.filter(paid=True)
+
+    months = []
+    income_data = []
+
+    for i in range(1, 13):
+        month_income = invoices.filter(date__month=i).aggregate(Sum('amount'))['amount__sum'] or 0
+        months.append(datetime(2025, i, 1).strftime("%b"))
+        income_data.append(month_income)
+
+    # أفضل الخدمات مبيعاً
+    top_services = (
+        Invoice.objects.values('service__name')
+        .annotate(total=Sum('amount'))
+        .order_by('-total')[:5]
+    )
+
+    top_services_labels = [s['service__name'] for s in top_services]
+    top_services_values = [s['total'] for s in top_services]
+
+    return render(request, "accounting.html", {
+        "total_income": total_income,
+        "total_expenses": total_expenses,
+        "net_profit": net_profit,
+        "invoice_count": invoice_count,
+        "months": months,
+        "income_data": income_data,
+        "top_services_labels": top_services_labels,
+        "top_services_values": top_services_values,
     })

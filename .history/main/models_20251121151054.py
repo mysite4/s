@@ -41,6 +41,10 @@ class Appointment(models.Model):
 
 
 # ---------------------- Invoice ----------------------
+from django.db import models
+from django.utils import timezone
+from .models import Appointment
+
 class Invoice(models.Model):
     appointment = models.OneToOneField(
         Appointment, 
@@ -51,7 +55,7 @@ class Invoice(models.Model):
     number = models.CharField(
         max_length=100, 
         unique=True,
-        null=True,       # يمكن تركه فارغًا
+        null=True,       # يمكن تركه فارغًا وسيتم توليده تلقائيًا إذا رغبت
         blank=True
     )
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -70,20 +74,12 @@ class Invoice(models.Model):
 
 # ---------------------- Payment ----------------------
 class Payment(models.Model):
-    invoice = models.ForeignKey(
-        Invoice, 
-        on_delete=models.CASCADE, 
-        related_name="payments",
-        null=True,       # السماح بأن يكون فارغ للسجلات القديمة
-        blank=True
-    )
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name="payments")
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     paid_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        if self.invoice:
-            return f"{self.amount} د.ل - {self.invoice.number}"
-        return f"{self.amount} د.ل - فاتورة غير محددة"
+        return f"{self.amount} د.ل - {self.invoice.number}"
 
 
 # ---------------------- Notification ----------------------

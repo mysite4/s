@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.utils import timezone
-from .models import Appointment, Patient, Notification, Invoice, AccountingItem, DoctorSchedule, Payment
+from .models import (
+    Appointment, Patient, Notification, Invoice, AccountingItem, DoctorSchedule, Payment
+)
 from .forms import AppointmentForm, PatientForm
+
 
 # الصفحة الرئيسية
 def home(request):
@@ -14,12 +17,14 @@ def booking_page(request):
     if request.method == 'POST':
         form = AppointmentForm(request.POST)
         if form.is_valid():
-            appointment = form.save()
+            appointment = form.save()  # يخزن الموعد
 
+            # الحصول على الملاحظات من الفورم
             patient_name = form.cleaned_data['name']
             patient_phone = form.cleaned_data['phone']
             patient_notes = form.cleaned_data.get('message', '')
 
+            # إنشاء أو تحديث المريض لتخزين الملاحظات
             patient, created = Patient.objects.update_or_create(
                 name=patient_name,
                 defaults={
@@ -54,19 +59,21 @@ def patients_view(request):
     return render(request, 'services/patients.html', {'form': form, 'patients': patients_list})
 
 
-# صفحة المحاسبة
+# صفحة المحاسبة - تحديث
 def accounting_dashboard(request):
-    invoices = Invoice.objects.all().order_by('-date')
+    invoices = Invoice.objects.all().order_by('-date')  # كل الفواتير
     accounting_data = []
 
     for invoice in invoices:
+        # مجموع المدفوعات للفواتير
+        total_paid = sum(payment.amount for payment in invoice.payments.all())
         accounting_data.append({
-            'invoice_number': invoice.number,
             'patient_name': invoice.appointment.name if invoice.appointment else "غير مرتبط",
+            'invoice_number': invoice.number,
             'total_amount': invoice.total_amount,
-            'paid_amount': invoice.paid_amount,
-            'remaining_amount': invoice.remaining_amount,
-            'payments': invoice.payments.all()  # كل دفعة مرتبطة بالفاتورة
+            'paid_amount': total_paid,
+            'remaining_amount': invoice.total_amount - total_paid,
+            'payments': invoice.payments.all(),  # لو حابين نعرض كل دفعة بالتفصيل
         })
 
     return render(request, 'services/accounting.html', {'accounting_data': accounting_data})
@@ -101,9 +108,9 @@ def edit_appointment(request):
     return JsonResponse({"success": False})
 
 
-# صفحة الإحصائيات
+# صفحة الإحصائيات (عدد المرضى + الحجوزات التي أُدخلت اليوم)
 def stats_view(request):
-    today = timezone.localdate()
+    today = timezone.localdate()  # تاريخ اليوم حسب المنطقة الزمنية
 
     total_patients = Patient.objects.count()
     visits_today = Appointment.objects.filter(created_at__date=today).count()

@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.utils import timezone
-from .models import Appointment, Patient, Notification, Invoice, Payment, AccountingItem, DoctorSchedule
+from django.db.models import Sum
+from .models import Appointment, Patient, Notification, Invoice
 from .forms import AppointmentForm, PatientForm
 
 # الصفحة الرئيسية
@@ -30,15 +31,7 @@ def booking_page(request):
                 }
             )
 
-            # إنشاء فاتورة تلقائيًا للموعد
-            invoice = Invoice.objects.create(
-                appointment=appointment,
-                total_amount=appointment.service_price,  # السعر من الموعد
-                paid_amount=0,                            # المدفوع يبدأ 0
-                date=timezone.now()
-            )
-
-            return render(request, 'booking_success.html', {'invoice': invoice})
+            return render(request, 'booking_success.html')
     else:
         form = AppointmentForm()
     return render(request, 'booking.html', {'form': form})
@@ -64,34 +57,16 @@ def patients_view(request):
     return render(request, 'services/patients.html', {'form': form, 'patients': patients_list})
 
 
-# صفحة المحاسبة
-def accounting_dashboard(request):
-    invoices = Invoice.objects.all().order_by('date')
-    context = []
+# صفحات الخدمات الأخرى (عرض فقط)
+def accounting(request):
+    return render(request, 'services/accounting.html')
 
-    for inv in invoices:
-        context.append({
-            'patient_name': inv.appointment.name if inv.appointment else "غير محدد",
-            'total_amount': inv.total_amount,
-            'paid_amount': inv.paid_amount,
-            'remaining_amount': inv.remaining_amount,
-        })
-
-    return render(request, 'services/accounting.html', {'invoices': context})
-
-
-# صفحة الاستقبال
 def reception(request):
-    doctors = DoctorSchedule.objects.all()
-    return render(request, 'services/reception.html', {'doctors': doctors})
+    return render(request, 'services/reception.html')
 
-
-# صفحة المهام
 def tasks(request):
     return render(request, 'services/tasks.html')
 
-
-# صفحة الطوارئ
 def emergency(request):
     return render(request, 'services/emergency.html')
 
@@ -113,13 +88,17 @@ def edit_appointment(request):
 def stats_view(request):
     today = timezone.localdate()  # تاريخ اليوم حسب المنطقة الزمنية
 
+    # عدد المرضى الكلي
     total_patients = Patient.objects.count()
+
+    # عدد الحجوزات التي تم إدخالها اليوم
     visits_today = Appointment.objects.filter(created_at__date=today).count()
 
     context = {
         'total_patients': total_patients,
         'visits_today': visits_today,
     }
+
     return render(request, 'services/statistics.html', context)
 
 
@@ -127,3 +106,25 @@ def stats_view(request):
 def notifications_page(request):
     notifications = Notification.objects.filter(is_active=True).order_by('-created_at')
     return render(request, 'services/notifications.html', {'notifications': notifications})
+
+# views.py
+from django.shortcuts import render
+from .models import Invoice, Payment
+
+def accounting_dashboard(request):
+    accounting_data = []
+
+    invoices = Invoice.objects.all().order_by('-date')  # كل الفواتير
+
+    for invoice in invoices:
+        payments = invoice.payments.all()  # كل الدفعات المرتبطة بالفاتورة
+        accounting_data.append({
+            'invoice_number': invoice.number or 'غير محدد',
+            'patient_name': invoice.appointment.name if invoice.appointment else 'غير معروف',
+            'total_amount': invoice.total_amount,
+            'paid_amount': invoice.paid_amount,
+            'remaining_amount': invoice.remaining_amount,
+            'payments': payments,
+        })
+
+    return render(request, 'services/accounting.html', {'accounting_data': accounting_data})

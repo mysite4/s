@@ -62,6 +62,7 @@
   <h1>احجز موعدك الآن</h1>
   <form method="POST">
     {% csrf_token %}
+    <!-- عرض جميع الحقول من الـ ModelForm بما فيها service_price -->
     {{ form.as_p }}
     <button type="submit">تأكيد الحجز</button>
   </form>

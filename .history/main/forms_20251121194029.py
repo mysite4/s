@@ -1,7 +1,6 @@
 from django import forms
-from .models import Appointment, Patient
+from .models import Appointment
 
-# ---------------- Appointment Form ----------------
 class AppointmentForm(forms.ModelForm):
     # حقول إضافية غير موجودة في الموديل مباشرة
     PAYMENT_CHOICES = (
@@ -30,9 +29,3 @@ class AppointmentForm(forms.ModelForm):
             initial=500,
             disabled=True
         )
-
-# ---------------- Patient Form ----------------
-class PatientForm(forms.ModelForm):
-    class Meta:
-        model = Patient
-        fields = ['name', 'age', 'gender', 'phone', 'disease', 'notes']

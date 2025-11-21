@@ -1,13 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.utils import timezone
-from .models import Appointment, Patient, Notification, Invoice, AccountingItem, DoctorSchedule
+from .models import Appointment, Patient, Notification, Invoice, Payment, AccountingItem, DoctorSchedule
 from .forms import AppointmentForm, PatientForm
 
 # الصفحة الرئيسية
 def home(request):
     return render(request, 'home.html')
-
 
 # صفحة الحجز
 def booking_page(request):
@@ -30,24 +29,21 @@ def booking_page(request):
                 }
             )
 
-            # إنشاء فاتورة تلقائيًا عند تأكيد الموعد (طريقة رقم 1)
-            Invoice.objects.create(
+            # إنشاء فاتورة تلقائيًا عند تأكيد الحجز
+            invoice, created = Invoice.objects.get_or_create(
                 appointment=appointment,
-                total_amount=appointment.service_price,
-                paid_amount=0  # يبدأ المبلغ المدفوع بصفر
+                defaults={'total_amount': appointment.service_price}
             )
 
-            return render(request, 'booking_success.html')
+            return render(request, 'booking_success.html', {'appointment': appointment})
     else:
         form = AppointmentForm()
     return render(request, 'booking.html', {'form': form})
-
 
 # عرض جميع المواعيد
 def appointments(request):
     appointments_list = Appointment.objects.all().order_by('-date', '-time')
     return render(request, 'services/appointments.html', {'appointments': appointments_list})
-
 
 # عرض وإضافة المرضى
 def patients_view(request):
@@ -62,31 +58,23 @@ def patients_view(request):
     patients_list = Patient.objects.all().order_by('-id')
     return render(request, 'services/patients.html', {'form': form, 'patients': patients_list})
 
-
-# صفحة المحاسبة (تعديل لعرض الفواتير مع المدفوع والباقي)
+# صفحة المحاسبة
 def accounting_dashboard(request):
     invoices = Invoice.objects.all().order_by('-date')
-    context = {
-        'invoices': invoices
-    }
-    return render(request, 'services/accounting.html', context)
-
+    return render(request, 'services/accounting.html', {'invoices': invoices})
 
 # صفحة الاستقبال
 def reception(request):
     doctors = DoctorSchedule.objects.all()
     return render(request, 'services/reception.html', {'doctors': doctors})
 
-
 # صفحة المهام
 def tasks(request):
     return render(request, 'services/tasks.html')
 
-
 # صفحة الطوارئ
 def emergency(request):
     return render(request, 'services/emergency.html')
-
 
 # تعديل موعد باستخدام AJAX
 def edit_appointment(request):
@@ -100,20 +88,16 @@ def edit_appointment(request):
         return JsonResponse({"success": True})
     return JsonResponse({"success": False})
 
-
-# صفحة الإحصائيات (عدد المرضى + الحجوزات التي أُدخلت اليوم)
+# صفحة الإحصائيات
 def stats_view(request):
-    today = timezone.localdate()  # تاريخ اليوم حسب المنطقة الزمنية
-
+    today = timezone.localdate()
     total_patients = Patient.objects.count()
     visits_today = Appointment.objects.filter(created_at__date=today).count()
-
     context = {
         'total_patients': total_patients,
         'visits_today': visits_today,
     }
     return render(request, 'services/statistics.html', context)
-
 
 # صفحة الإشعارات
 def notifications_page(request):

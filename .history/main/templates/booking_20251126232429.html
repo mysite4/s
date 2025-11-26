@@ -55,11 +55,6 @@
     button:hover {
       background: linear-gradient(to right, #0b1a5b, #1976d2);
     }
-    #remaining_amount {
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: #dc3545;
-    }
   </style>
 </head>
 <body>
@@ -74,25 +69,8 @@
     <label for="paid_amount">المبلغ المدفوع (د.ل)</label>
     <input type="number" step="0.01" name="paid_amount" id="paid_amount" placeholder="مثلاً 100" required>
 
-    <!-- حقل المتبقي -->
-    <label>المتبقي (د.ل)</label>
-    <input type="text" id="remaining_amount" value="500" readonly>
-
     <button type="submit">تأكيد الحجز</button>
   </form>
-
-  <script>
-    const paidInput = document.getElementById('paid_amount');
-    const remainingInput = document.getElementById('remaining_amount');
-    const totalPrice = 500;  // سعر الكشف ثابت
-
-    paidInput.addEventListener('input', function() {
-      const paid = parseFloat(paidInput.value) || 0;
-      let remaining = totalPrice - paid;
-      if (remaining < 0) remaining = 0;
-      remainingInput.value = remaining.toFixed(2);
-    });
-  </script>
 
 </body>
 </html>

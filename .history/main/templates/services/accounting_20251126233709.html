@@ -78,6 +78,7 @@
                 {% for invoice in invoices %}
                 <tr>
                     <td>{{ invoice.number }}</td>
+
                     <td>
                         {% if invoice.appointment %}
                             {{ invoice.appointment.name }}
@@ -85,10 +86,24 @@
                             <span class="text-muted">غير مرتبط بموعد</span>
                         {% endif %}
                     </td>
+
                     <td>{{ invoice.date|date:"Y-m-d" }}</td>
-                    <td>{{ invoice.total_amount }} د.ل</td>
-                    <td><span class="badge-paid">{{ invoice.paid_amount }} د.ل</span></td>
-                    <td><span class="badge-remain">{{ invoice.remaining_amount }} د.ل</span></td>
+
+                    <td>
+                        {% if invoice.appointment %}
+                            {{ invoice.appointment.service_price }} د.ل
+                        {% else %}
+                            0 د.ل
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <span class="badge-paid">{{ invoice.paid_amount }} د.ل</span>
+                    </td>
+
+                    <td>
+                        <span class="badge-remain">{{ invoice.remaining_amount }} د.ل</span>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>

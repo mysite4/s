@@ -40,11 +40,10 @@ def booking_page(request):
             # إنشاء رقم فاتورة فريد
             invoice_number = "INV-" + get_random_string(6).upper()
 
-            # إنشاء الفاتورة مع total_amount
+            # إنشاء الفاتورة
             invoice = Invoice.objects.create(
                 appointment=appointment,
                 number=invoice_number,
-                total_amount=appointment.service_price,
                 paid_amount=paid_amount,
                 date=timezone.now()
             )
@@ -57,6 +56,7 @@ def booking_page(request):
                     paid_at=timezone.now()
                 )
 
+            # تمرير الفاتورة للعرض مع الحساب التلقائي للمتبقي
             return render(request, 'booking_success.html', {'invoice': invoice})
 
     else:

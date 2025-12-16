@@ -73,14 +73,18 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 # settings.py
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',                # اسم قاعدة البيانات
-        'USER': 'postgres',                # اسم المستخدم
-        'PASSWORD': 'QHGLXXAJhLWunyGSBavTVSjzlvuOAkTe',  # كلمة السر
-        'HOST': 'shinkansen.proxy.rlwy.net',  # الـ Host
-        'PORT': '34564',                   # المنفذ
+        'NAME': 'postgres',  # اسم قاعدة البيانات عندك في Supabase
+        'USER': 'postgres',  # اسم المستخدم الافتراضي
+        'PASSWORD': 'tz?GtUPruri2iAg',  # كلمة السر اللي أعطيتني إياها
+        'HOST': 'dkxplqedcaqwcwldbkts.supabase.co',  # الـ Host من Supabase
+        'PORT': '5432',  # المنفذ الافتراضي
+        'OPTIONS': {
+            'sslmode': 'require',  # مهم للاتصال الآمن
+        },
     }
 }
 

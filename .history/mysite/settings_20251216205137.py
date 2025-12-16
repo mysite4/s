@@ -75,12 +75,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # settings.py
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',                # اسم قاعدة البيانات
-        'USER': 'postgres',                # اسم المستخدم
-        'PASSWORD': 'QHGLXXAJhLWunyGSBavTVSjzlvuOAkTe',  # كلمة السر
-        'HOST': 'shinkansen.proxy.rlwy.net',  # الـ Host
-        'PORT': '34564',                   # المنفذ
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'if0_40698619_mysite49_db',
+        'USER': 'if0_40698619',
+        'PASSWORD': 'VcsPDs6sozPf8J',
+        'HOST': 'sql307.infinityfree.com',
+        'PORT': '3306',
     }
 }
 

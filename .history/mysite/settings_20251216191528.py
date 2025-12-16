@@ -37,11 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # لإدارة الملفات الثابتة على Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,10 +75,19 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'clinc_ac',  # اسم قاعدة البيانات
+        'USER': 'clinc_ac_user',  # اسم المستخدم
+        'PASSWORD': 'eikSnLqSta7woypuMncqs2LRk8EVNZJc',  # كلمة المرور
+        'HOST': 'dpg-d47opoqli9vc738sp2qg-a.oregon-postgres.render.com',  # الـ hostname فقط
+        'PORT': '5432',  # بورت PostgreSQL
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
+
+
 
 
 # Password validation
@@ -114,19 +123,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
 # مكان تجميع كل ملفات static قبل الرفع
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# لو عندك مجلدات static إضافية
+# مجلدات static داخل المشروع
 STATICFILES_DIRS = [
-    BASE_DIR / "static",  # هذا مجلد الملفات الأصلية عندك
+    BASE_DIR / "main" / "static",  # هذا مكان ملفاتك الحقيقية
 ]
+# استخدام WhiteNoise لضغط وتخزين ملفات static
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Default primary key field type

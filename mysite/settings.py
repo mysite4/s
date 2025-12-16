@@ -81,6 +81,9 @@ DATABASES = {
         'PASSWORD': 'eikSnLqSta7woypuMncqs2LRk8EVNZJc',  # كلمة المرور
         'HOST': 'dpg-d47opoqli9vc738sp2qg-a.oregon-postgres.render.com',  # الـ hostname فقط
         'PORT': '5432',  # بورت PostgreSQL
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
 

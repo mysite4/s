@@ -1,94 +1,0 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
-<div class="page-container fade-in">
-  <h1 class="page-title">📅 نظام المواعيد والحجوزات</h1>
-
-  <!-- Tabs -->
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="add">إضافة موعد جديد</button>
-    <button class="tab-btn" data-tab="list">قائمة المواعيد</button>
-    <button class="tab-btn" data-tab="manage">تعديل أو إلغاء موعد</button>
-  </div>
-
-  <!-- محتوى Tabs -->
-  <div class="tab-content" id="add">
-    <h2>إضافة موعد جديد</h2>
-    <p>قم بتسجيل موعد جديد لمريض بسهولة وسرعة عبر النظام.</p>
-    <!-- هنا ممكن تحط نموذج Django Form -->
-    <form>
-      <input type="text" placeholder="اسم المريض">
-      <input type="date" placeholder="تاريخ الموعد">
-      <input type="time" placeholder="وقت الموعد">
-      <button class="btn-main">حفظ الموعد</button>
-    </form>
-  </div>
-
-  <div class="tab-content" id="list" style="display:none;">
-    <h2>قائمة المواعيد</h2>
-    <p>عرض المواعيد القادمة، المرتبطة بالأطباء والمرضى.</p>
-    <!-- هنا ممكن تحط جدول بالمواعيد -->
-    <table class="appointments-table">
-      <thead>
-        <tr>
-          <th>اسم المريض</th>
-          <th>التاريخ</th>
-          <th>الوقت</th>
-          <th>الطبيب</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- تكرار المواعيد باستخدام Django loop -->
-        {% for appointment in appointments %}
-        <tr>
-          <td>{{ appointment.patient_name }}</td>
-          <td>{{ appointment.date }}</td>
-          <td>{{ appointment.time }}</td>
-          <td>{{ appointment.doctor_name }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-
-  <div class="tab-content" id="manage" style="display:none;">
-    <h2>تعديل أو إلغاء موعد</h2>
-    <p>يمكنك تعديل بيانات الموعد أو إلغاؤه بكل سهولة.</p>
-    <!-- مثال: اختيار موعد للتعديل -->
-    <form>
-      <select>
-        {% for appointment in appointments %}
-        <option value="{{ appointment.id }}">{{ appointment.patient_name }} - {{ appointment.date }}</option>
-        {% endfor %}
-      </select>
-      <button class="btn-alert">تعديل</button>
-      <button class="btn-secondary">إلغاء</button>
-    </form>
-  </div>
-</div>
-
-<!-- JS لتبديل الـ Tabs -->
-<script>
-  const tabButtons = document.querySelectorAll('.tab-btn');
-  const tabContents = document.querySelectorAll('.tab-content');
-
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // إزالة active من كل الأزرار
-      tabButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      // إخفاء كل المحتويات
-      tabContents.forEach(c => c.style.display = 'none');
-
-      // إظهار المحتوى المختار
-      const tabId = btn.getAttribute('data-tab');
-      document.getElementById(tabId).style.display = 'block';
-    });
-  });
-</script>
-
-{% endblock %}

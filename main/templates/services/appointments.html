@@ -11,6 +11,7 @@
   <div class="tabs">
     <button class="tab-btn active" data-tab="list">قائمة المواعيد</button>
     <button class="tab-btn" data-tab="manage">تعديل أو إلغاء موعد</button>
+    <button class="tab-btn" data-tab="add">إضافة موعد جديد</button>
   </div>
 
   <!-- محتوى قائمة المواعيد -->
@@ -50,7 +51,6 @@
     <button id="edit-btn" class="btn-alert">تعديل</button>
     <button id="delete-btn" class="btn-secondary">إلغاء</button>
 
-    <!-- نموذج تعديل يظهر عند الضغط على تعديل -->
     <div id="edit-form-container" style="display:none; text-align:right; margin-top:20px;">
       <h3>تعديل الموعد</h3>
       <form id="edit-appointment-form">
@@ -63,6 +63,19 @@
         <button type="submit" class="btn-main">حفظ التعديلات</button>
       </form>
     </div>
+  </div>
+
+  <!-- محتوى إضافة موعد جديد -->
+  <div class="tab-content" id="add" style="display:none;">
+    <h2>إضافة موعد جديد</h2>
+    <form id="add-appointment-form">
+      {% csrf_token %}
+      <input type="text" name="patient_name" id="add-patient-name" placeholder="اسم المريض" required>
+      <input type="date" name="date" id="add-date" required>
+      <input type="time" name="time" id="add-time" required>
+      <input type="text" name="doctor_name" id="add-doctor-name" placeholder="اسم الطبيب" required>
+      <button type="submit" class="btn-main">إضافة الموعد</button>
+    </form>
   </div>
 </div>
 
@@ -100,30 +113,48 @@
 
     editFormContainer.style.display = 'block';
   });
- // إرسال تعديل الموعد إلى السيرفر
-document.getElementById('edit-appointment-form').addEventListener('submit', function(e) {
-  e.preventDefault();
 
-  const formData = new FormData(this);
-  
-  fetch("{% url 'edit_appointment' %}", {
-    method: "POST",
-    headers: {
-      'X-CSRFToken': formData.get('csrfmiddlewaretoken')
-    },
-    body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      alert("تم حفظ التعديلات بنجاح ✅");
-      location.reload();
-    } else {
-      alert("حدث خطأ أثناء الحفظ ❌");
-    }
+  // إرسال تعديل الموعد إلى السيرفر
+  document.getElementById('edit-appointment-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    
+    fetch("{% url 'edit_appointment' %}", {
+      method: "POST",
+      headers: { 'X-CSRFToken': formData.get('csrfmiddlewaretoken') },
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert("تم حفظ التعديلات بنجاح ✅");
+        location.reload();
+      } else {
+        alert("حدث خطأ أثناء الحفظ ❌");
+      }
+    });
   });
-});
 
+  // إرسال إضافة موعد جديد إلى السيرفر
+  document.getElementById('add-appointment-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    fetch("{% url 'add_appointment' %}", {
+      method: "POST",
+      headers: { 'X-CSRFToken': formData.get('csrfmiddlewaretoken') },
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert("تم إضافة الموعد بنجاح ✅");
+        location.reload();
+      } else {
+        alert("حدث خطأ أثناء الإضافة ❌: " + (data.error || ""));
+      }
+    });
+  });
 </script>
 
 <style>

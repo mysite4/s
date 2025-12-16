@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>فاتورة {{ invoice.number }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        h1 { text-align: center; }
+        .total { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>فاتورة رقم {{ invoice.number }}</h1>
+    <p>تاريخ الفاتورة: {{ invoice.date }}</p>
+    <p>المريض: {{ invoice.appointment.name if invoice.appointment else 'غير مرتبط' }}</p>
+    <p>سعر الكشف: {{ invoice.total_amount }} د.ل</p>
+    <p>المبلغ المدفوع: {{ invoice.paid_amount }} د.ل</p>
+    <p>المتبقي: {{ invoice.remaining_amount }} د.ل</p>
+
+    {% if payments %}
+    <h2>الدفعات</h2>
+    <table>
+        <tr>
+            <th>المبلغ</th>
+            <th>تاريخ الدفع</th>
+        </tr>
+        {% for payment in payments %}
+        <tr>
+            <td>{{ payment.amount }}</td>
+            <td>{{ payment.paid_at }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <script>
+        window.onload = function() {
+            window.print(); // يفتح نافذة الطباعة تلقائياً
+        }
+    </script>
+</body>
+</html>

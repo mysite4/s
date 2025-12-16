@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from .views import accounting_dashboard
-
+from .views import print_invoice_view
 urlpatterns = [
     path('', views.home, name='home'),
     path('booking/', views.booking_page, name='booking_page'),
@@ -14,4 +14,5 @@ urlpatterns = [
     path('services/tasks/', views.tasks, name='tasks'),
     path('services/emergency/', views.emergency, name='emergency'),
     path('edit_appointment/', views.edit_appointment, name='edit_appointment'),
+    path('invoice/print/<int:invoice_id>/', print_invoice_view, name='print_invoice'),
 ]

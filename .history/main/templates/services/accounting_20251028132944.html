@@ -1,30 +1,0 @@
-{% extends 'home.html' %}
-{% load static %}
-
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
-<div class="page-container fade-in">
-  <h1 class="page-title">💰 نظام المحاسبة</h1>
-
-  <div class="grid-container">
-    <div class="card">
-      <h3>إضافة فاتورة</h3>
-      <p>إنشاء فواتير جديدة للمرضى أو العمليات الطبية.</p>
-      <button class="btn-main">إضافة فاتورة</button>
-    </div>
-
-    <div class="card">
-      <h3>سجل الفواتير</h3>
-      <p>عرض كافة الفواتير السابقة والمدفوعات المتأخرة.</p>
-      <button class="btn-secondary">عرض السجل</button>
-    </div>
-
-    <div class="card">
-      <h3>إحصائيات مالية</h3>
-      <p>تعرف على الدخل اليومي والشهري بطريقة بصرية.</p>
-      <button class="btn-alert">عرض الإحصائيات</button>
-    </div>
-  </div>
-</div>
-{% endblock %}

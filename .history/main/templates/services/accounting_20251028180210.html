@@ -1,107 +1,0 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
-<section class="accounting-section fade-in">
-  <div class="container">
-    <h1 class="title">💰 نظام المحاسبة</h1>
-    <p class="subtitle">
-      نظام المحاسبة لدينا يساعد العيادة على إدارة الفواتير والمدفوعات بسهولة وشفافية.
-      تم تصميمه لتسهيل تتبع المعاملات المالية وتحسين دقة الحسابات.
-    </p>
-
-    <div class="features">
-      <div class="feature-card">
-        <img src="{% static 'images/invoice.png' %}" alt="الفواتير" class="feature-icon">
-        <h3>إدارة الفواتير</h3>
-        <p>ينشئ وعدّل الفواتير بطريقة منظمة وسريعة.</p>
-      </div>
-
-      <div class="feature-card">
-        <img src="{% static 'images/record.png' %}" alt="السجل المالي" class="feature-icon">
-        <h3>سجل المدفوعات</h3>
-        <p>يحتفظ بسجل شامل لجميع المعاملات بسهولة.</p>
-      </div>
-
-      <div class="feature-card">
-        <img src="{% static 'images/chart.png' %}" alt="الإحصائيات" class="feature-icon">
-        <h3>تحليل مالي مبسط</h3>
-        <p>يتابع الأداء المالي عبر تقارير ورسوم بيانية.</p>
-      </div>
-    </div>
-
-    <div class="cta">
-      <p>هل ترغب بمعرفة المزيد عن النظام؟</p>
-      <button class="btn-main">تواصل معنا</button>
-    </div>
-  </div>
-</section>
-
-<style>
-.accounting-section {
-  padding: 80px 20px;
-  text-align: center;
-  background: #f8f9fb;
-}
-
-.title {
-  font-size: 2.3rem;
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.subtitle {
-  max-width: 600px;
-  margin: 0 auto 50px;
-  color: #555;
-  line-height: 1.8;
-}
-
-.features {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 25px;
-}
-
-.feature-card {
-  background: #fff;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  width: 280px;
-  transition: all 0.3s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-}
-
-.feature-icon {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 15px;
-}
-
-.cta {
-  margin-top: 60px;
-}
-
-.btn-main {
-  background-color: #3a86ff;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-main:hover {
-  background-color: #265dbe;
-}
-</style>
-{% endblock %}

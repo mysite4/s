@@ -1,123 +1,0 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
-<section class="finance-system-section fade-in">
-  <div class="container">
-    <h1 class="page-title">نظام المحاسبة الذكي للعيادة 🏥💰</h1>
-    <p class="page-subtitle">
-      نظام متكامل لإدارة كل ما يتعلق بالشؤون المالية في العيادة. 
-      يضمن تتبع الفواتير والمدفوعات وتحليل الأداء المالي بدقة وسهولة.
-    </p>
-
-    <div class="info-cards">
-      <div class="info-card">
-        <div class="icon">🧾</div>
-        <h3>إصدار الفواتير</h3>
-        <p>إمكانية إنشاء فواتير دقيقة وسريعة للمرضى مع الاحتفاظ بسجل كامل لكل عملية.</p>
-      </div>
-
-      <div class="info-card">
-        <div class="icon">💸</div>
-        <h3>تتبع المدفوعات</h3>
-        <p>مراجعة المدفوعات المستلمة والمتأخرة بسهولة لضمان عدم فقد أي دفعة.</p>
-      </div>
-
-      <div class="info-card">
-        <div class="icon">📈</div>
-        <h3>تحليل الأداء المالي</h3>
-        <p>رصد الإيرادات والمصروفات وعرض الإحصائيات بطريقة مرئية لفهم الوضع المالي للعيادة.</p>
-      </div>
-
-      <div class="info-card">
-        <div class="icon">🔔</div>
-        <h3>تنبيهات مالية ذكية</h3>
-        <p>إشعارات تلقائية لأي مدفوعات متأخرة أو تغييرات في الفواتير، لتسهيل المتابعة اليومية.</p>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<style>
-.finance-system-section {
-  padding: 70px 20px;
-  background-color: #e8f0fe;
-  text-align: center;
-  font-family: 'Cairo', sans-serif;
-}
-
-.page-title {
-  font-size: 2.7rem;
-  color: #1a237e;
-  margin-bottom: 15px;
-}
-
-.page-subtitle {
-  font-size: 1.2rem;
-  color: #3a3a3a;
-  max-width: 750px;
-  margin: 0 auto 50px;
-  line-height: 1.6;
-}
-
-.info-cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 25px;
-}
-
-.info-card {
-  background: #fff;
-  width: 280px;
-  padding: 25px 20px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: center;
-}
-
-.info-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-}
-
-.info-card .icon {
-  font-size: 45px;
-  margin-bottom: 15px;
-}
-
-.info-card h3 {
-  color: #0d47a1;
-  margin-bottom: 10px;
-}
-
-.info-card p {
-  color: #555;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.cta-section {
-  margin-top: 60px;
-}
-
-.btn-main {
-  background-color: #0d47a1;
-  color: #fff;
-  border: none;
-  padding: 12px 28px;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-main:hover {
-  background-color: #06257a;
-}
-</style>
-{% endblock %}

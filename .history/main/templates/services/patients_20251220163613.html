@@ -26,85 +26,6 @@
     display: none !important;
   }
 }
-
-/* ===== تنسيق الصفحة ===== */
-.page-container {
-    width: 95%;
-    margin: 40px auto;
-    font-family: 'Cairo', sans-serif;
-    display: block !important;
-    opacity: 1 !important;
-}
-
-.page-title {
-    font-size: 32px;
-    font-weight: bold;
-    color: #0b1a5b;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.page-desc {
-    text-align: center;
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 20px;
-}
-
-/* ===== الجدول ===== */
-#patients-table {
-  width: 90%;
-  margin: 20px auto;
-  border-collapse: collapse;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  font-size: 15px;
-  background-color: #fff;
-}
-
-#patients-table th,
-#patients-table td {
-  padding: 12px;
-  text-align: center;
-  border: 1px solid #ddd;
-}
-
-#patients-table th {
-  background: linear-gradient(to right, #1976d2, #0b1a5b);
-  color: white;
-}
-
-#patients-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-#patients-table tr:hover {
-  background-color: #f1f1f1;
-}
-
-/* ===== البحث ===== */
-#search {
-  display: block;
-  width: 40%;
-  margin: 20px auto;
-  padding: 10px;
-  font-size: 16px;
-}
-
-/* ===== زر الطباعة ===== */
-.btn-main {
-    background: #0d6efd;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.btn-main:hover {
-    background: #0b5ed7;
-}
 </style>
 
 <div class="page-container fade-in">
@@ -167,5 +88,51 @@ function printTable() {
   window.print();
 }
 </script>
+
+<style>
+/* ===== تنسيق الجدول ===== */
+#patients-table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  font-size: 15px;
+  background-color: #fff;
+}
+
+#patients-table th,
+#patients-table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+#patients-table th {
+  background: linear-gradient(to right, #1976d2, #0b1a5b);
+  color: white;
+}
+
+#patients-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#patients-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+#search {
+  display: block;
+  width: 40%;
+  margin: 20px auto;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.page-desc {
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+}
+</style>
 
 {% endblock %}

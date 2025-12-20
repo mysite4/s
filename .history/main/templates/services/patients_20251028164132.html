@@ -1,69 +1,0 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
-<div class="page-container fade-in">
-  <h1 class="page-title">🧑‍⚕️ إدارة المرضى</h1>
-  <p style="text-align:center; margin-bottom:30px; color:#555;">
-  هذه الصفحة تعرض سجل جميع المرضى المسجلين لدينا. 
-  يمكنك البحث عن أي مريض بسهولة للتحقق من تفاصيله ومعلوماته الشخصية عند الحاجة.
-</p>
-
-  <!-- تبويب واحد: قائمة المرضى -->
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="list">قائمة المرضى</button>
-  </div>
-
-  <!-- قائمة المرضى -->
-  <div class="tab-content" id="list">
-    <h2>المرضى المسجلين</h2>
-
-    <!-- بحث -->
-    <form method="GET" style="margin-bottom:20px; text-align:center;">
-      <input type="text" name="q" placeholder="ابحث باسم المريض..." value="{{ query }}" style="padding:8px; width:250px; border-radius:5px; border:1px solid #ccc;">
-      <button type="submit" class="btn-main">بحث</button>
-    </form>
-
-    <table class="appointments-table" style="margin:0 auto; text-align:center;">
-      <thead>
-        <tr>
-          <th>اسم المريض</th>
-          <th>رقم الهاتف</th>
-          <th>تاريخ الميلاد</th>
-          <th>ملاحظات</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for patient in patients %}
-        <tr>
-          <td>{{ patient.name }}</td>
-          <td>{{ patient.phone }}</td>
-          <td>{{ patient.birth_date }}</td>
-          <td>{{ patient.notes }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="4">لا يوجد مرضى مسجلين.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<script>
-  // التبديل بين Tabs (رغم أننا لدينا تبويب واحد فقط الآن)
-  const tabButtons = document.querySelectorAll('.tab-btn');
-  const tabContents = document.querySelectorAll('.tab-content');
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      tabContents.forEach(c => c.style.display = 'none');
-      document.getElementById(btn.getAttribute('data-tab')).style.display = 'block';
-    });
-  });
-</script>
-{% endblock %}

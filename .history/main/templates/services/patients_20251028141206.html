@@ -1,30 +1,0 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
-<div class="page-container fade-in">
-  <h1 class="page-title">🧾 تسجيل المرضى</h1>
-
-  <div class="grid-container">
-    <div class="card">
-      <h3>إضافة مريض جديد</h3>
-      <p>قم بإدخال بيانات المريض مثل الاسم، العمر، رقم الهاتف والملاحظات.</p>
-      <button class="btn-main">تسجيل الآن</button>
-    </div>
-
-    <div class="card">
-      <h3>قائمة المرضى</h3>
-      <p>عرض جميع المرضى المسجلين مع إمكانية التعديل أو الحذف.</p>
-      <button class="btn-secondary">عرض القائمة</button>
-    </div>
-
-    <div class="card">
-      <h3>بحث عن مريض</h3>
-      <p>ابحث بسهولة عن مريض باستخدام رقم الهوية أو الاسم.</p>
-      <button class="btn-alert">بحث الآن</button>
-    </div>
-  </div>
-</div>
-{% endblock %}

@@ -1,30 +1,0 @@
-{% extends 'home.html' %}
-{% load static %}
-
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
-<div class="page-container fade-in">
-  <h1 class="page-title">🔔 الرسائل والتنبيهات</h1>
-
-  <div class="grid-container">
-    <div class="card">
-      <h3>تنبيه بالمواعيد</h3>
-      <p>إرسال إشعار للمرضى حول موعدهم القادم.</p>
-      <button class="btn-main">إرسال إشعار</button>
-    </div>
-
-    <div class="card">
-      <h3>تنبيهات داخلية</h3>
-      <p>إرسال إشعار للموظفين أو الإدارة عند وجود حالة عاجلة.</p>
-      <button class="btn-secondary">إرسال تنبيه</button>
-    </div>
-
-    <div class="card">
-      <h3>سجل الإشعارات</h3>
-      <p>عرض كل التنبيهات التي تم إرسالها مسبقًا.</p>
-      <button class="btn-alert">عرض السجل</button>
-    </div>
-  </div>
-</div>
-{% endblock %}

@@ -1,47 +1,0 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
-<div class="page-container fade-in">
-  <h1 class="page-title">نظام المحاسبة 💰</h1>
-  <p class="page-subtitle">عرض جميع الفواتير مع المدفوع والمتبقي</p>
-
-  <table class="table table-striped table-hover mt-4">
-    <thead>
-      <tr>
-        <th>رقم الفاتورة</th>
-        <th>اسم المريض</th>
-        <th>تاريخ الفاتورة</th>
-        <th>إجمالي الفاتورة (د.ل)</th>
-        <th>المدفوع (د.ل)</th>
-        <th>المتبقي (د.ل)</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for invoice in invoices %}
-      <tr>
-        <td>{{ invoice.number }}</td>
-        <td>
-          {% if invoice.appointment %}
-            {{ invoice.appointment.name }}
-          {% else %}
-            غير مرتبط بموعد
-          {% endif %}
-        </td>
-        <td>{{ invoice.date }}</td>
-        <td>{{ invoice.total_amount }}</td>
-        <td>{{ invoice.paid_amount }}</td>
-        <td>{{ invoice.remaining_amount }}</td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="6" class="text-center">لا توجد فواتير حتى الآن</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-
-{% endblock %}

@@ -1,86 +1,0 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
-<div class="page-container fade-in">
-  <h1 class="page-title">🔔 لوحة التنبيهات</h1>
-  <p class="page-subtitle">
-    هنا تظهر أحدث التنبيهات والرسائل الصادرة من النظام — لتبقى دائمًا على اطلاع.
-  </p>
-
-  <div class="notifications-container">
-    <div class="notification success">
-      <h3>✅ تم تأكيد موعد جديد</h3>
-      <p>تم حجز موعد للمريض <strong>آية عبد الله</strong> الساعة 10:30 صباحًا.</p>
-      <span class="time">منذ 5 دقائق</span>
-    </div>
-
-    <div class="notification warning">
-      <h3>⚠️ فاتورة غير مسددة</h3>
-      <p>المريض <strong>محمد صالح</strong> لم يُسدد المبلغ المستحق حتى الآن.</p>
-      <span class="time">منذ 1 ساعة</span>
-    </div>
-
-    <div class="notification info">
-      <h3>💡 تذكير إداري</h3>
-      <p>يرجى تحديث بيانات المرضى قبل نهاية الأسبوع.</p>
-      <span class="time">منذ 3 ساعات</span>
-    </div>
-
-    <div class="notification danger">
-      <h3>🚨 عطل في غرفة الأشعة</h3>
-      <p>تم رصد خلل في جهاز الأشعة الرئيسي — جاري الصيانة.</p>
-      <span class="time">منذ 10 دقائق</span>
-    </div>
-  </div>
-</div>
-
-<style>
-.page-subtitle {
-  text-align: center;
-  color: #666;
-  margin-top: -10px;
-  margin-bottom: 30px;
-}
-
-.notifications-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.notification {
-  border-radius: 12px;
-  padding: 18px 20px;
-  color: #333;
-  background-color: #fff;
-  border-left: 6px solid;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  position: relative;
-  transition: transform 0.2s ease;
-}
-
-.notification:hover {
-  transform: translateX(-4px);
-}
-
-.notification h3 {
-  margin: 0 0 8px;
-}
-
-.notification .time {
-  position: absolute;
-  top: 18px;
-  left: 20px;
-  font-size: 13px;
-  color: #777;
-}
-
-.notification.success { border-color: #4caf50; background-color: #e8f5e9; }
-.notification.warning { border-color: #ff9800; background-color: #fff3e0; }
-.notification.info    { border-color: #03a9f4; background-color: #e3f2fd; }
-.notification.danger  { border-color: #f44336; background-color: #ffebee; }
-</style>
-{% endblock %}

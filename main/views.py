@@ -192,3 +192,8 @@ def delete_appointment(request):
             return JsonResponse({"success": False})
 
     return JsonResponse({"success": False})
+
+from django.shortcuts import render
+
+def price_list(request):
+    return render(request, 'services/price_list.html')

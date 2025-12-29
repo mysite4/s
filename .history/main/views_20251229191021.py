@@ -1,29 +1,28 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.http import JsonResponse
-from .models import Appointment, Patient, Notification, Invoice, Payment, AccountingItem, DoctorSchedule
+from .models import Appointment, Patient, Notification, Invoice, Payment, AccountingItem, DoctorSchedule, Doctor
 from .forms import AppointmentForm, PatientForm
+from django.utils.crypto import get_random_string
+from django.views.decorators.csrf import csrf_exempt
 
 # ------------------- الصفحة الرئيسية -------------------
 def home(request):
     return render(request, 'home.html')
 
-from django.utils.crypto import get_random_string
 
+# ------------------- صفحة الحجز -------------------
 def booking_page(request):
+    doctor_id = request.GET.get('doctor')  # للحصول على الطبيب من الرابط
     if request.method == 'POST':
         form = AppointmentForm(request.POST)
         if form.is_valid():
-            appointment = form.save()
-
-            # تأكيد أن الخدمة ثابتة (500)
-            appointment.service_price = 500  
+            appointment = form.save(commit=False)
+            appointment.service_price = 500
             appointment.save()
 
-            # تحويل المدفوع لرقم
             paid_amount = float(request.POST.get('paid_amount', 0))
 
-            # إنشاء أو تحديث المريض
             patient_name = form.cleaned_data['name']
             patient_phone = form.cleaned_data['phone']
             patient_notes = form.cleaned_data.get('message', '')
@@ -36,10 +35,8 @@ def booking_page(request):
                 }
             )
 
-            # إنشاء رقم فاتورة فريد
             invoice_number = "INV-" + get_random_string(6).upper()
 
-            # إنشاء الفاتورة
             invoice = Invoice.objects.create(
                 appointment=appointment,
                 number=invoice_number,
@@ -48,7 +45,6 @@ def booking_page(request):
                 date=timezone.now()
             )
 
-            # إنشاء دفعة إذا فيه دفع
             if paid_amount > 0:
                 Payment.objects.create(
                     invoice=invoice,
@@ -59,9 +55,9 @@ def booking_page(request):
             return render(request, 'booking_success.html', {'invoice': invoice})
 
     else:
-        form = AppointmentForm()
+        form = AppointmentForm(initial={'doctor': doctor_id})
 
-    return render(request, 'booking.html', {'form': form})
+    return render(request, 'booking.html', {'form': form, 'doctor_id': doctor_id})
 
 
 # ------------------- عرض جميع المواعيد -------------------
@@ -124,6 +120,32 @@ def edit_appointment(request):
     return JsonResponse({"success": False})
 
 
+# ------------------- إضافة موعد جديد باستخدام AJAX -------------------
+@csrf_exempt
+def add_appointment(request):
+    if request.method == "POST":
+        patient_name = request.POST.get("patient_name")
+        date = request.POST.get("date")
+        time = request.POST.get("time")
+        doctor_name = request.POST.get("doctor_name")
+
+        if not all([patient_name, date, time, doctor_name]):
+            return JsonResponse({"success": False, "error": "البيانات غير مكتملة"})
+
+        doctor, created = Doctor.objects.get_or_create(name=doctor_name, defaults={'specialty': 'عام'})
+
+        Appointment.objects.create(
+            name=patient_name,
+            date=date,
+            time=time,
+            doctor=doctor
+        )
+
+        return JsonResponse({"success": True})
+
+    return JsonResponse({"success": False})
+
+
 # ------------------- صفحة الإحصائيات -------------------
 def stats_view(request):
     today = timezone.localdate()
@@ -140,3 +162,38 @@ def stats_view(request):
 def notifications_page(request):
     notifications = Notification.objects.filter(is_active=True).order_by('-created_at')
     return render(request, 'services/notifications.html', {'notifications': notifications})
+
+
+# ------------------- طباعة الفاتورة -------------------
+def print_invoice_view(request, invoice_id):
+    invoice = get_object_or_404(Invoice, id=invoice_id)
+    payments = invoice.payments.all()
+
+    context = {
+        'invoice': invoice,
+        'payments': payments,
+    }
+    return render(request, 'print_invoice.html', context)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Appointment
+
+@csrf_exempt
+def delete_appointment(request):
+    if request.method == "POST":
+        appointment_id = request.POST.get("appointment_id")
+
+        try:
+            appointment = Appointment.objects.get(id=appointment_id)
+            appointment.delete()
+            return JsonResponse({"success": True})
+        except Appointment.DoesNotExist:
+            return JsonResponse({"success": False})
+
+    return JsonResponse({"success": False})
+
+from django.shortcuts import render
+
+def price_list(request):
+    return render(request, 'services/price_list.html')

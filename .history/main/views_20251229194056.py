@@ -115,8 +115,6 @@ def edit_appointment(request):
         appointment.name = request.POST.get("patient_name")
         appointment.date = request.POST.get("date")
         appointment.time = request.POST.get("time")
-        appointment.phone = request.POST.get("phone")
-
         appointment.save()
         return JsonResponse({"success": True})
     return JsonResponse({"success": False})

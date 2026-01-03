@@ -16,6 +16,7 @@ class Patient(models.Model):
     age = models.IntegerField(blank=True, null=True)
     gender = models.CharField(max_length=10)
     phone = models.CharField(max_length=15)
+    email = models.EmailField(blank=True, null=True)  # ✅ أضفنا الحقل
     disease = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     notes = models.TextField(blank=True, null=True)

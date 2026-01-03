@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-
 # ---------------------- Doctors ----------------------
 class Doctor(models.Model):
     name = models.CharField(max_length=100)
@@ -17,7 +16,8 @@ class Patient(models.Model):
     age = models.IntegerField(blank=True, null=True)
     gender = models.CharField(max_length=10)
     phone = models.CharField(max_length=15)
-    disease = models.CharField(max_length=200)
+    email = models.EmailField(blank=True, null=True)  # ✅ أضفنا الحقل
+    disease = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     notes = models.TextField(blank=True, null=True)
 
@@ -33,7 +33,7 @@ class Appointment(models.Model):
     date = models.DateField(verbose_name="تاريخ الموعد")
     time = models.TimeField(verbose_name="الوقت")
     message = models.TextField(blank=True, null=True, verbose_name="ملاحظات")
-    service_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="سعر الكشف")
+    service_price = models.DecimalField(max_digits=10, decimal_places=2, default=500, verbose_name="سعر الكشف")
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -45,22 +45,24 @@ class Invoice(models.Model):
     appointment = models.OneToOneField(
         Appointment, 
         on_delete=models.CASCADE,
-        null=True,       # السماح بأن يكون فارغ للسجلات القديمة
+        null=True,
         blank=True
     )
     number = models.CharField(
-        max_length=100, 
+        max_length=100,
         unique=True,
-        null=True,       # يمكن تركه فارغًا
+        null=True,
         blank=True
     )
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # ← أصبح حقل حقيقي
     paid_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     date = models.DateField(default=timezone.now)
 
     @property
     def remaining_amount(self):
-        return self.total_amount - self.paid_amount
+        remaining = self.total_amount - self.paid_amount
+        return remaining if remaining > 0 else 0  # يمنع القيم السالبة
 
     def __str__(self):
         if self.appointment:
@@ -71,10 +73,10 @@ class Invoice(models.Model):
 # ---------------------- Payment ----------------------
 class Payment(models.Model):
     invoice = models.ForeignKey(
-        Invoice, 
-        on_delete=models.CASCADE, 
+        Invoice,
+        on_delete=models.CASCADE,
         related_name="payments",
-        null=True,       # السماح بأن يكون فارغ للسجلات القديمة
+        null=True,
         blank=True
     )
     amount = models.DecimalField(max_digits=10, decimal_places=2)

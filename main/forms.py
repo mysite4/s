@@ -3,6 +3,7 @@ from .models import Appointment, Patient
 
 # ---------------- Appointment Form ----------------
 class AppointmentForm(forms.ModelForm):
+    email = forms.EmailField(required=True, label="البريد الإلكتروني")  # ← جديد
     PAYMENT_CHOICES = (
         ("cash", "كاش"),
         ("card", "بطاقة"),
@@ -12,7 +13,7 @@ class AppointmentForm(forms.ModelForm):
 
     class Meta:
         model = Appointment
-        fields = ['name', 'phone', 'doctor', 'date', 'time', 'message']
+        fields = ['name', 'phone', 'doctor', 'date', 'time', 'message' , 'email']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
             'time': forms.TimeInput(attrs={'type': 'time'}),

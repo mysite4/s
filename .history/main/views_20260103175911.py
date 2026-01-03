@@ -11,9 +11,9 @@ def home(request):
     return render(request, 'home.html')
 
 
-# ------------------- صفحة الحجز -------------------# views.py
+# ------------------- صفحة الحجز -------------------
 def booking_page(request):
-    doctor_id = request.GET.get('doctor')
+    doctor_id = request.GET.get('doctor')  # للحصول على الطبيب من الرابط
     if request.method == 'POST':
         form = AppointmentForm(request.POST)
         if form.is_valid():
@@ -21,23 +21,19 @@ def booking_page(request):
             appointment.service_price = 500
             appointment.save()
 
-            # جلب البيانات من الفورم
+            paid_amount = float(request.POST.get('paid_amount', 0))
+
             patient_name = form.cleaned_data['name']
             patient_phone = form.cleaned_data['phone']
-            patient_email = form.cleaned_data['email']  # ← هنا نحصل على الايميل
             patient_notes = form.cleaned_data.get('message', '')
 
-            # حفظ المريض أو تحديثه
             patient, created = Patient.objects.update_or_create(
                 name=patient_name,
                 defaults={
                     'phone': patient_phone,
-                    'email': patient_email,  # حفظ الايميل
                     'notes': patient_notes
                 }
             )
-
-            paid_amount = float(request.POST.get('paid_amount', 0))
 
             invoice_number = "INV-" + get_random_string(6).upper()
 
@@ -49,11 +45,20 @@ def booking_page(request):
                 date=timezone.now()
             )
 
+            if paid_amount > 0:
+                Payment.objects.create(
+                    invoice=invoice,
+                    amount=paid_amount,
+                    paid_at=timezone.now()
+                )
+
             return render(request, 'booking_success.html', {'invoice': invoice})
+
     else:
         form = AppointmentForm(initial={'doctor': doctor_id})
 
     return render(request, 'booking.html', {'form': form, 'doctor_id': doctor_id})
+
 
 # ------------------- عرض جميع المواعيد -------------------
 def appointments(request):
@@ -218,4 +223,3 @@ def send_email_to_patients(sender, instance, created, **kwargs):
                     recipient_list=[patient.email],
                     fail_silently=True
                 )
-

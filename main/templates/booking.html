@@ -68,7 +68,21 @@
   <form method="POST">
     {% csrf_token %}
 
-    {{ form.as_p }}
+    <!-- اسم المريض -->
+    <label for="id_name">اسم المريض</label>
+    <input type="text" name="name" id="id_name" placeholder="أدخل اسمك" required>
+
+    <!-- رقم الهاتف -->
+    <label for="id_phone">رقم الهاتف</label>
+    <input type="text" name="phone" id="id_phone" placeholder="مثلاً 0912345678" required>
+
+    <!-- الإيميل -->
+    <label for="id_email">البريد الإلكتروني</label>
+    <input type="email" name="email" id="id_email" placeholder="مثلاً example@mail.com" required>
+
+    <!-- ملاحظات إضافية -->
+    <label for="id_message">ملاحظات</label>
+    <textarea name="message" id="id_message" placeholder="اكتب أي ملاحظة إضافية"></textarea>
 
     <!-- حقل الدفع -->
     <label for="paid_amount">المبلغ المدفوع (د.ل)</label>
@@ -78,7 +92,6 @@
     <label>المتبقي (د.ل)</label>
     <input type="text" id="remaining_amount" value="500" readonly>
     
-
     <button type="submit">تأكيد الحجز</button>
   </form>
 

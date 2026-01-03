@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+    <!-- CSRF TOKEN -->
+    <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2>🔔 التنبيهات</h2>
+
+        <a href="/admin/main/notification/"
+           target="_blank"
+           class="btn-main"
+           style="text-decoration:none;">
+            ⚙️ إدارة التنبيهات
+        </a>
+    </div>
+
+    {% if notifications %}
+        <ul style="list-style:none; padding:0;">
+            {% for note in notifications %}
+                <li style="margin-bottom:15px; padding:15px; background:#fff; border-radius:10px;">
+                    <strong>{{ note.title }}</strong>
+                    <p>{{ note.message }}</p>
+                    <small>{{ note.created_at|date:"d/m/Y - H:i" }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="color:gray;">
+            لا توجد تنبيهات حالياً
+        </p>
+    {% endif %}
+
+    <button id="sendNotificationsBtn" class="btn-main" style="margin-top:20px;">
+        📲 إرسال التنبيهات للمرضى
+    </button>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const csrfToken = document.getElementById("csrf-token").value;
+
+    document.getElementById("sendNotificationsBtn").addEventListener("click", function () {
+
+        fetch("/send-notifications/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken
+            },
+            body: JSON.stringify({
+                action: "send"
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+        })
+        .catch(error => {
+            console.error(error);
+            alert("❌ حدث خطأ");
+        });
+
+    });
+
+});
+</script>
+
+{% endblock %}

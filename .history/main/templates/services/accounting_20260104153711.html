@@ -136,7 +136,7 @@
                     <td><span class="badge-paid">{{ invoice.paid_amount }} د.ل</span></td>
                     <td><span class="badge-remain">{{ invoice.remaining_amount }} د.ل</span></td>
                     <td class="no-print">
-                        <button class="btn-row-print" onclick="printRow(this)">
+                        <button class="btn-print no-print" onclick="printTable()">
                             🖨️ طباعة
                         </button>
                     </td>
@@ -155,29 +155,30 @@
 // طباعة الجدول كامل
 function printTable() {
     const table = document.getElementById('invoice-table').cloneNode(true);
-    const printArea = document.createElement('div');
-    printArea.style.fontFamily = 'Cairo';
-    printArea.style.padding = '20px';
+    const w = window.open('', '', 'width=1000,height=800');
+    const doc = w.document;
+    doc.open();
 
-    const h2 = document.createElement('h2');
+    const body = doc.createElement('body');
+    body.style.fontFamily = 'Cairo';
+    body.style.padding = '20px';
+
+    const h2 = doc.createElement('h2');
     h2.innerText = 'جميع الفواتير';
     h2.style.textAlign = 'center';
-    printArea.appendChild(h2);
+    body.appendChild(h2);
 
+    // إضافة أنماط للطباعة
     Array.from(table.querySelectorAll('th, td')).forEach(cell => {
         cell.style.border = '1px solid #000';
         cell.style.padding = '10px';
         cell.style.textAlign = 'center';
     });
 
-    // إزالة أزرار الطباعة من الجدول قبل الطباعة
-    table.querySelectorAll('.no-print').forEach(e => e.remove());
-
-    printArea.appendChild(table);
-
-    document.body.appendChild(printArea);
-    window.print();
-    document.body.removeChild(printArea);
+    body.appendChild(table);
+    doc.body = body;
+    doc.close();
+    w.print();
 }
 
 // طباعة صف واحد مثل الجدول كامل
@@ -201,23 +202,27 @@ function printRow(button) {
     table.appendChild(trHead);
 
     const trData = row.cloneNode(true);
+    // إزالة زر الطباعة من النسخة
     trData.querySelectorAll('.no-print').forEach(e => e.remove());
     table.appendChild(trData);
 
-    const printArea = document.createElement('div');
-    printArea.style.fontFamily = 'Cairo';
-    printArea.style.padding = '20px';
+    const w = window.open('', '', 'width=800,height=600');
+    const doc = w.document;
+    doc.open();
 
-    const h2 = document.createElement('h2');
+    const body = doc.createElement('body');
+    body.style.fontFamily = 'Cairo';
+    body.style.padding = '20px';
+
+    const h2 = doc.createElement('h2');
     h2.innerText = 'فاتورة محاسبة';
     h2.style.textAlign = 'center';
-    printArea.appendChild(h2);
+    body.appendChild(h2);
 
-    printArea.appendChild(table);
-
-    document.body.appendChild(printArea);
-    window.print();
-    document.body.removeChild(printArea);
+    body.appendChild(table);
+    doc.body = body;
+    doc.close();
+    w.print();
 }
 </script>
 

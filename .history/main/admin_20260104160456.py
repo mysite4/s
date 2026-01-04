@@ -18,12 +18,6 @@ class AppointmentAdmin(admin.ModelAdmin):
     search_fields = ('name', 'phone', 'doctor__name')
 
 # ------------------ Patient ------------------
-# إزالة أي تسجيل سابق لموديل Patient
-try:
-    admin.site.unregister(Patient)
-except admin.sites.NotRegistered:
-    pass
-
 @admin.action(description="إرسال تنبيه لجميع المرضى")
 def send_email_notification(modeladmin, request, queryset):
     for patient in queryset:
@@ -49,12 +43,6 @@ class NotificationAdmin(admin.ModelAdmin):
     search_fields = ('title', 'message')
 
 # ------------------ AccountingItem ------------------
-# إزالة أي تسجيل سابق لموديل AccountingItem
-try:
-    admin.site.unregister(AccountingItem)
-except admin.sites.NotRegistered:
-    pass
-
 admin.site.register(AccountingItem)
 
 # ------------------ DoctorSchedule ------------------
@@ -63,12 +51,6 @@ class DoctorScheduleAdmin(admin.ModelAdmin):
     list_display = ('name', 'start_time', 'end_time', 'hall')
 
 # ------------------ Invoice ------------------
-# إزالة أي تسجيل سابق لموديل Invoice
-try:
-    admin.site.unregister(Invoice)
-except admin.sites.NotRegistered:
-    pass
-
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):
     list_display = ('number', 'date', 'total_amount', 'paid_amount', 'remaining_amount', 'print_invoice')
@@ -80,3 +62,4 @@ class InvoiceAdmin(admin.ModelAdmin):
         return format_html('<a class="button" href="{}" target="_blank">طباعة</a>', url)
 
     print_invoice.short_description = 'طباعة الفاتورة'
+    print_invoice.allow_tags = True

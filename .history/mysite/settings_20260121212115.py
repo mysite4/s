@@ -73,18 +73,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 # settings.py
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',  # اسم قاعدة البيانات عندك في Supabase
-        'USER': 'postgres',  # اسم المستخدم الافتراضي
-        'PASSWORD': 'tz?GtUPruri2iAg',  # كلمة السر اللي أعطيتني إياها
-        'HOST': 'dkxplqedcaqwcwldbkts.supabase.co',  # الـ Host من Supabase
-        'PORT': '5432',  # المنفذ الافتراضي
-        'OPTIONS': {
-            'sslmode': 'require',  # مهم للاتصال الآمن
-        },
+        'NAME': 'clinic_db_jez4',                # اسم قاعدة البيانات
+        'USER': 'clinic_db_jez4_user',           # اسم المستخدم
+        'PASSWORD': 'H1tLcbXSqYLEkAqoyQu7UidPJAlCv1nT',  # كلمة السر من Render
+        'HOST': 'dpg-d5oi96v5c7fs73d55igg-a',   # Hostname
+        'PORT': '5432',                           # Port
     }
 }
 
@@ -143,3 +139,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'clinicn16@gmail.com'  # البريد اللي يرسل منه
+EMAIL_HOST_PASSWORD = 'RaneemRaneem49'  # كلمة مرور التطبيق

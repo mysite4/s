@@ -76,11 +76,11 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',                # اسم قاعدة البيانات
-        'USER': 'postgres',                # اسم المستخدم
-        'PASSWORD': 'QHGLXXAJhLWunyGSBavTVSjzlvuOAkTe',  # كلمة السر
-        'HOST': 'shinkansen.proxy.rlwy.net',  # الـ Host
-        'PORT': '34564',                   # المنفذ
+        'NAME': 'clinic_db_jez4',                # اسم قاعدة البيانات
+        'USER': 'clinic_db_jez4_user',           # اسم المستخدم
+        'PASSWORD': 'H1tLcbXSqYLEkAqoyQu7UidPJAlCv1nT',  # كلمة السر من Render
+        'HOST': 'dpg-d5oi96v5c7fs73d55igg-a',   # Hostname
+        'PORT': '5432',                           # Port
     }
 }
 

@@ -76,13 +76,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'clinic_db_jez4',                   # اسم قاعدة البيانات
-        'USER': 'clinic_db_jez4_user',              # اسم المستخدم
-        'PASSWORD': 'H1tLcbXSqYLEkAqoyQu7UidPJAlCv1nT',  # كلمة السر
-        'HOST': 'dpg-d5oi96v5c7fs73d55igg-a.oregon-postgres.render.com',  # **hostname فقط**
-        'PORT': '5432',                             # Port
+        'NAME': 'clinic_db_jez4',                # اسم قاعدة البيانات
+        'USER': 'clinic_db_jez4_user',           # اسم المستخدم
+        'PASSWORD': 'H1tLcbXSqYLEkAqoyQu7UidPJAlCv1nT',  # كلمة السر من Render
+        'HOST': 'postgresql://clinic_db_jez4_user:H1tLcbXSqYLEkAqoyQu7UidPJAlCv1nT@dpg-d5oi96v5c7fs73d55igg-a.oregon-postgres.render.com/clinic_db_jez4',   # Hostname
+        'PORT': '5432',                           # Port
     }
 }
+
 
 
 

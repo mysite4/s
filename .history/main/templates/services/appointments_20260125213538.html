@@ -82,7 +82,7 @@
     <button class="tab-btn" data-tab="add">إضافة</button>
   </div>
 
-  <!-- قائمة المواعيد -->
+  <!-- قائمة -->
   <div id="list">
     <button onclick="window.print()" class="btn-main no-print">🖨️ طباعة</button>
     <div id="print-area">
@@ -108,9 +108,7 @@
             <td>{{ a.doctor.name }}</td>
           </tr>
           {% empty %}
-          <tr>
-            <td colspan="6">لا توجد مواعيد</td>
-          </tr>
+          <tr><td colspan="6">لا توجد مواعيد</td></tr>
           {% endfor %}
         </tbody>
       </table>
@@ -135,18 +133,17 @@
     </select>
 
     <br><br>
-
     <input id="patient-name-input" placeholder="اسم المريض">
     <input id="phone-input" placeholder="رقم الهاتف">
     <input type="date" id="date-input">
     <input type="time" id="time-input">
-
     <br><br>
+
     <button id="edit-btn" class="btn-main">تعديل</button>
     <button id="delete-btn" class="btn-main" style="background:#dc3545">إلغاء</button>
   </div>
 
-  <!-- إضافة موعد -->
+  <!-- إضافة -->
   <div id="add" style="display:none" class="no-print">
     <h3>إضافة موعد</h3>
 
@@ -170,89 +167,75 @@
 </div>
 
 <script>
-// Tabs
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+/* Tabs */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('list').style.display = 'none';
-    document.getElementById('manage').style.display = 'none';
-    document.getElementById('add').style.display = 'none';
-    document.getElementById(btn.dataset.tab).style.display = 'block';
-  });
+    document.querySelectorAll('#list,#manage,#add').forEach(d=>d.style.display='none');
+    document.getElementById(btn.dataset.tab).style.display='block';
+  }
 });
 
-// تعبئة بيانات التعديل
-document.getElementById('appointment-select').addEventListener('change', function () {
+/* تعبئة بيانات التعديل */
+document.getElementById('appointment-select').onchange = function(){
   const o = this.selectedOptions[0];
-  if (!o) return;
+  if(!o) return;
+  patient-name-input.value = o.dataset.name;
+  phone-input.value = o.dataset.phone;
+  date-input.value = o.dataset.date;
+  time-input.value = o.dataset.time;
+}
 
-  document.getElementById('patient-name-input').value = o.dataset.name;
-  document.getElementById('phone-input').value = o.dataset.phone;
-  document.getElementById('date-input').value = o.dataset.date;
-  document.getElementById('time-input').value = o.dataset.time;
-});
-
-// تعديل موعد
-document.getElementById('edit-btn').addEventListener('click', function () {
-  const id = document.getElementById('appointment-select').value;
-  if (!id) return alert('اختاري موعد');
-
+/* تعديل */
+document.getElementById('edit-btn').onclick = ()=>{
+  const id = appointment-select.value;
+  if(!id) return alert('اختاري موعد');
   const f = new FormData();
   f.append('appointment_id', id);
-  f.append('patient_name', document.getElementById('patient-name-input').value);
-  f.append('phone', document.getElementById('phone-input').value);
-  f.append('date', document.getElementById('date-input').value);
-  f.append('time', document.getElementById('time-input').value);
+  f.append('patient_name', patient-name-input.value);
+  f.append('phone', phone-input.value);
+  f.append('date', date-input.value);
+  f.append('time', time-input.value);
 
   fetch("{% url 'edit_appointment' %}", {
-    method: 'POST',
-    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
-    body: f
-  })
-  .then(r => r.json())
-  .then(d => {
-    if (d.success) location.reload();
-    else alert('فشل التعديل');
+    method:'POST',
+    headers:{'X-CSRFToken':'{{ csrf_token }}'},
+    body:f
+  }).then(r=>r.json()).then(d=>{
+    d.success ? location.reload() : alert('فشل التعديل');
   });
-});
+}
 
-// حذف موعد
-document.getElementById('delete-btn').addEventListener('click', function () {
-  const id = document.getElementById('appointment-select').value;
-  if (!id) return alert('اختاري موعد');
-  if (!confirm('هل أنتِ متأكدة من الإلغاء؟')) return;
+/* حذف */
+document.getElementById('delete-btn').onclick = ()=>{
+  const id = appointment-select.value;
+  if(!id) return alert('اختاري موعد');
+  if(!confirm('تأكيد الإلغاء؟')) return;
 
   const f = new FormData();
   f.append('appointment_id', id);
 
   fetch("{% url 'delete_appointment' %}", {
-    method: 'POST',
-    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
-    body: f
-  })
-  .then(r => r.json())
-  .then(d => {
-    if (d.success) location.reload();
-    else alert('فشل الحذف');
+    method:'POST',
+    headers:{'X-CSRFToken':'{{ csrf_token }}'},
+    body:f
+  }).then(r=>r.json()).then(d=>{
+    d.success ? location.reload() : alert('فشل الحذف');
   });
-});
+}
 
-// إضافة موعد
-document.getElementById('add-appointment-form').addEventListener('submit', function (e) {
+/* إضافة */
+document.getElementById('add-appointment-form').onsubmit = e=>{
   e.preventDefault();
-
   fetch("{% url 'add_appointment' %}", {
-    method: 'POST',
-    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
-    body: new FormData(this)
-  })
-  .then(r => r.json())
-  .then(d => {
-    if (d.success) location.reload();
-    else alert(d.error || 'خطأ');
+    method:'POST',
+    headers:{'X-CSRFToken':'{{ csrf_token }}'},
+    body:new FormData(e.target)
+  }).then(r=>r.json()).then(d=>{
+    d.success ? location.reload() : alert(d.error);
   });
-});
+}
 </script>
 
 {% endblock %}

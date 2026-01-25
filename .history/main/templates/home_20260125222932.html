@@ -58,6 +58,14 @@
          <p>تُوفر رعاية فورية للحالات العاجلة مثل آلام الأسنان الشديدة أو الكسور لضمان راحة المريض وسرعة علاجه. </p>
         </a>
       </div>
+      <div class="service-item">
+  <a href="{% url 'price_list' %}">
+    <img src="{% static 'image/monye2.png' %}" alt="قائمة الأسعار">
+    <h3>قائمة الأسعار</h3>
+    <p>عرض جميع خدمات العيادة وأسعارها بشكل واضح ومنظم</p>
+  </a>
+</div>
+
     </div>
   </section>
    <!-- قسم نبذة عنا -->
@@ -91,7 +99,7 @@
       <div class="swiper-slide doctor-card">
         <div class="doctor-img"><img src="{% static 'image/photo1.jpg' %}" alt=""></div>
         <div class="doctor-info">
-          <h3>د. أمل الفيتوري</h3>
+          <h3>د. بثينة الفيتوري</h3>
           <p>السبت 4:00-10:00 مساءاً.</p>
           <a href="{% url 'booking_page' %}?doctor=Reem" class="book-doctor-btn">احجز مع الدكتورة</a>
         </div>

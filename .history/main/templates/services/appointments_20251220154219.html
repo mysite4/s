@@ -1,163 +1,0 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
-<div class="page-container fade-in">
-  <h1 class="page-title">إدارة المواعيد📅 </h1>
-
-  <!-- Tabs -->
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="list">قائمة المواعيد</button>
-    <button class="tab-btn" data-tab="manage">تعديل أو إلغاء موعد</button>
-    <button class="tab-btn" data-tab="add">إضافة موعد جديد</button>
-  </div>
-
-  <!-- قائمة المواعيد -->
-  <div class="tab-content" id="list">
-    <h2>المواعيد المحجوزة</h2>
-    <table id="appointments-table" class="appointments-table">
-      <thead>
-        <tr>
-          <th>اسم المريض</th>
-          <th>التاريخ</th>
-          <th>الوقت</th>
-          <th>الطبيب</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for appointment in appointments %}
-        <tr data-id="{{ appointment.id }}">
-          <td>{{ appointment.name }}</td>
-          <td>{{ appointment.date }}</td>
-          <td>{{ appointment.time }}</td>
-          <td>{{ appointment.doctor.name }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-
-  <!-- تعديل / إلغاء -->
-  <div class="tab-content" id="manage" style="display:none;">
-    <h2>تعديل أو إلغاء موعد</h2>
-
-    <select id="appointment-select">
-      <option value="" disabled selected>اختر موعد</option>
-      {% for appointment in appointments %}
-      <option value="{{ appointment.id }}">
-        {{ appointment.name }} - {{ appointment.date }}
-      </option>
-      {% endfor %}
-    </select>
-
-    <button id="edit-btn" class="btn-alert">تعديل</button>
-    <button id="delete-btn" class="btn-secondary">إلغاء</button>
-
-    <!-- نموذج التعديل -->
-    <div id="edit-form-container" style="display:none; text-align:right; margin-top:20px;">
-      <h3>تعديل الموعد</h3>
-      <form id="edit-appointment-form">
-        {% csrf_token %}
-        <input type="hidden" name="appointment_id" id="edit-appointment-id">
-        <input type="text" name="patient_name" id="edit-patient-name" placeholder="اسم المريض" required>
-        <input type="date" name="date" id="edit-date" required>
-        <input type="time" name="time" id="edit-time" required>
-        <input type="text" name="doctor_name" id="edit-doctor-name" placeholder="اسم الطبيب" required>
-        <button type="submit" class="btn-main">حفظ التعديلات</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- إضافة موعد -->
-  <div class="tab-content" id="add" style="display:none;">
-    <h2>إضافة موعد جديد</h2>
-    <form id="add-appointment-form">
-      {% csrf_token %}
-      <input type="text" name="patient_name" placeholder="اسم المريض" required>
-      <input type="date" name="date" required>
-      <input type="time" name="time" required>
-      <input type="text" name="doctor_name" placeholder="اسم الطبيب" required>
-      <button type="submit" class="btn-main">إضافة الموعد</button>
-    </form>
-  </div>
-</div>
-
-<script>
-/* Tabs */
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-    document.getElementById(btn.dataset.tab).style.display = 'block';
-  });
-});
-
-/* زر التعديل */
-document.getElementById('edit-btn').addEventListener('click', () => {
-  const select = document.getElementById('appointment-select');
-  if (!select.value) return alert('اختر موعد أولاً');
-
-  const row = document.querySelector(`#appointments-table tr[data-id='${select.value}']`);
-  const cells = row.children;
-
-  document.getElementById('edit-appointment-id').value = select.value;
-  document.getElementById('edit-patient-name').value = cells[0].textContent;
-  document.getElementById('edit-date').value = cells[1].textContent;
-  document.getElementById('edit-time').value = cells[2].textContent;
-  document.getElementById('edit-doctor-name').value = cells[3].textContent;
-
-  document.getElementById('edit-form-container').style.display = 'block';
-});
-
-/* حفظ التعديل */
-document.getElementById('edit-appointment-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const formData = new FormData(this);
-
-  fetch("{% url 'edit_appointment' %}", {
-    method: "POST",
-    headers: { 'X-CSRFToken': formData.get('csrfmiddlewaretoken') },
-    body: formData
-  })
-  .then(r => r.json())
-  .then(d => {
-    if (d.success) {
-      alert("تم التعديل بنجاح ✅");
-      location.reload();
-    } else {
-      alert("فشل التعديل ❌");
-    }
-  });
-});
-
-/* زر الإلغاء (الحذف) ✅ */
-document.getElementById('delete-btn').addEventListener('click', () => {
-  const select = document.getElementById('appointment-select');
-  if (!select.value) return alert('اختر موعد أولاً');
-
-  if (!confirm("هل أنت متأكد من إلغاء هذا الموعد؟")) return;
-
-  const formData = new FormData();
-  formData.append('appointment_id', select.value);
-  formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-
-  fetch("{% url 'delete_appointment' %}", {
-    method: "POST",
-    body: formData
-  })
-  .then(r => r.json())
-  .then(d => {
-    if (d.success) {
-      alert("تم إلغاء الموعد ✅");
-      location.reload();
-    } else {
-      alert("فشل الإلغاء ❌");
-    }
-  });
-});
-</script>
-
-{% endblock %}

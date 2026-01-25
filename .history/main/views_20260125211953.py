@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+<style>
+.page-container {
+    width: 95%;
+    margin: 40px auto;
+    font-family: 'Cairo', sans-serif;
+}
+.page-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #0b1a5b;
+    text-align: center;
+}
+.page-subtitle {
+    text-align: center;
+    color: #555;
+    margin-bottom: 25px;
+}
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.tab-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+.tab-btn.active {
+    background: #0b1a5b;
+    color: white;
+}
+.classic-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.classic-table th,
+.classic-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+.classic-table th {
+    background: #0b1a5b;
+    color: white;
+}
+.btn-main {
+    background: #0d6efd;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.no-print { margin-bottom: 15px; }
+
+@media print {
+  body * { visibility: hidden; }
+  #print-area, #print-area * { visibility: visible; }
+  #print-area { position: absolute; top: 0; left: 0; width: 100%; }
+  .no-print { display: none !important; }
+}
+</style>
+
+<div class="page-container">
+  <h1 class="page-title">إدارة المواعيد 📅</h1>
+  <p class="page-subtitle">إضافة، تعديل، إلغاء وطباعة</p>
+
+  <!-- Tabs -->
+  <div class="tabs no-print">
+    <button class="tab-btn active" data-tab="list">قائمة</button>
+    <button class="tab-btn" data-tab="manage">تعديل / إلغاء</button>
+    <button class="tab-btn" data-tab="add">إضافة</button>
+  </div>
+
+  <!-- قائمة -->
+  <div id="list">
+    <button onclick="window.print()" class="btn-main no-print">🖨️ طباعة</button>
+    <div id="print-area">
+      <table class="classic-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>المريض</th>
+            <th>الهاتف</th>
+            <th>التاريخ</th>
+            <th>الوقت</th>
+            <th>الطبيب</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in appointments %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ a.name }}</td>
+            <td>{{ a.phone }}</td>
+            <td>{{ a.date }}</td>
+            <td>{{ a.time }}</td>
+            <td>{{ a.doctor.name }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6">لا توجد مواعيد</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- تعديل / إلغاء -->
+  <div id="manage" style="display:none" class="no-print">
+    <h3>تعديل أو إلغاء موعد</h3>
+
+    <select id="appointment-select">
+      <option value="">اختر موعد</option>
+      {% for a in appointments %}
+      <option value="{{ a.id }}"
+        data-name="{{ a.name }}"
+        data-phone="{{ a.phone }}"
+        data-date="{{ a.date }}"
+        data-time="{{ a.time }}">
+        {{ a.name }} - {{ a.date }}
+      </option>
+      {% endfor %}
+    </select>
+
+    <br><br>
+    <input id="patient-name-input" placeholder="اسم المريض">
+    <input id="phone-input" placeholder="رقم الهاتف">
+    <input type="date" id="date-input">
+    <input type="time" id="time-input">
+    <br><br>
+
+    <button id="edit-btn" class="btn-main">تعديل</button>
+    <button id="delete-btn" class="btn-main" style="background:#dc3545">إلغاء</button>
+  </div>
+
+  <!-- إضافة -->
+  <div id="add" style="display:none" class="no-print">
+    <h3>إضافة موعد</h3>
+
+    <form id="add-appointment-form">
+      <input name="name" placeholder="اسم المريض" required>
+      <input name="phone" placeholder="الهاتف" required>
+      <input name="email" placeholder="البريد">
+      <select name="doctor" required>
+        <option value="">اختر طبيب</option>
+        {% for d in doctors %}
+        <option value="{{ d.id }}">{{ d.name }}</option>
+        {% endfor %}
+      </select>
+      <input type="date" name="date" required>
+      <input type="time" name="time" required>
+      <textarea name="message" placeholder="ملاحظات"></textarea>
+      <input type="number" name="paid_amount" value="0">
+      <button class="btn-main">إضافة</button>
+    </form>
+  </div>
+</div>
+
+<script>
+/* Tabs */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#list,#manage,#add').forEach(d=>d.style.display='none');
+    document.getElementById(btn.dataset.tab).style.display='block';
+  }
+});
+
+/* تعبئة بيانات التعديل */
+document.getElementById('appointment-select').onchange = function(){
+  const o = this.selectedOptions[0];
+  if(!o) return;
+  patient-name-input.value = o.dataset.name;
+  phone-input.value = o.dataset.phone;
+  date-input.value = o.dataset.date;
+  time-input.value = o.dataset.time;
+}
+
+/* تعديل */
+document.getElementById('edit-btn').onclick = ()=>{
+  const id = appointment-select.value;
+  if(!id) return alert('اختاري موعد');
+  const f = new FormData();
+  f.append('appointment_id', id);
+  f.append('patient_name', patient-name-input.value);
+  f.append('phone', phone-input.value);
+  f.append('date', date-input.value);
+  f.append('time', time-input.value);
+
+  fetch("{% url 'edit_appointment' %}", {
+    method:'POST',
+    headers:{'X-CSRFToken':'{{ csrf_token }}'},
+    body:f
+  }).then(r=>r.json()).then(d=>{
+    d.success ? location.reload() : alert('فشل التعديل');
+  });
+}
+
+/* حذف */
+document.getElementById('delete-btn').onclick = ()=>{
+  const id = appointment-select.value;
+  if(!id) return alert('اختاري موعد');
+  if(!confirm('تأكيد الإلغاء؟')) return;
+
+  const f = new FormData();
+  f.append('appointment_id', id);
+
+  fetch("{% url 'delete_appointment' %}", {
+    method:'POST',
+    headers:{'X-CSRFToken':'{{ csrf_token }}'},
+    body:f
+  }).then(r=>r.json()).then(d=>{
+    d.success ? location.reload() : alert('فشل الحذف');
+  });
+}
+
+/* إضافة */
+document.getElementById('add-appointment-form').onsubmit = e=>{
+  e.preventDefault();
+  fetch("{% url 'add_appointment' %}", {
+    method:'POST',
+    headers:{'X-CSRFToken':'{{ csrf_token }}'},
+    body:new FormData(e.target)
+  }).then(r=>r.json()).then(d=>{
+    d.success ? location.reload() : alert(d.error);
+  });
+}
+</script>
+
+{% endblock %}

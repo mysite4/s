@@ -1,0 +1,282 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+from django.http import JsonResponse
+from .models import Appointment, Patient, Notification, Invoice, Payment, AccountingItem, DoctorSchedule, Doctor
+from .forms import AppointmentForm, PatientForm
+from django.utils.crypto import get_random_string
+from django.views.decorators.csrf import csrf_exempt
+
+# ------------------- الصفحة الرئيسية -------------------
+def home(request):
+    return render(request, 'home.html')
+def booking_page(request):
+    doctors = Doctor.objects.all()
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        doctor_id = request.POST.get('doctor')
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        paid_amount = float(request.POST.get('paid_amount', 0))
+
+        if not all([name, phone, doctor_id, date, time]):
+            return render(request, 'booking.html', {
+                'doctors': doctors,
+                'error': 'الرجاء تعبئة كل الحقول'
+            })
+
+        # الطبيب
+        doctor = Doctor.objects.get(id=doctor_id)
+
+        # الموعد
+        appointment = Appointment.objects.create(
+            name=name,
+            phone=phone,
+            doctor=doctor,
+            date=date,
+            time=time,
+            message=message,
+            service_price=500
+        )
+
+        # المريض
+        Patient.objects.create(
+            name=name,
+            phone=phone,
+            email=email,
+            notes=message
+        )
+
+        # الفاتورة
+        invoice = Invoice.objects.create(
+            appointment=appointment,
+            number="INV-" + get_random_string(6).upper(),
+            total_amount=500,
+            paid_amount=paid_amount
+        )
+
+        if paid_amount > 0:
+            Payment.objects.create(
+                invoice=invoice,
+                amount=paid_amount
+            )
+
+        return render(request, 'booking_success.html', {'invoice': invoice})
+
+    return render(request, 'booking.html', {'doctors': doctors})
+
+# ------------------- عرض جميع المواعيد -------------------
+def appointments(request):
+    appointments_list = Appointment.objects.all().order_by('-date', '-time')
+    doctors = Doctor.objects.all()
+
+    return render(request, 'services/appointments.html', {
+        'appointments': appointments_list,
+        'doctors': doctors
+    })
+
+
+# ------------------- عرض وإضافة المرضى -------------------
+def patients_view(request):
+    if request.method == 'POST':
+        form = PatientForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('patients')
+    else:
+        form = PatientForm()
+
+    patients_list = Patient.objects.all().order_by('-id')
+    return render(request, 'services/patients.html', {'form': form, 'patients': patients_list})
+
+
+# ------------------- صفحة المحاسبة -------------------
+def accounting_dashboard(request):
+    items = AccountingItem.objects.all().order_by('date')
+    invoices = Invoice.objects.all().order_by('-date')
+    context = {
+        'accounting_items': items,
+        'invoices': invoices
+    }
+    return render(request, 'services/accounting.html', context)
+
+
+# ------------------- صفحة الاستقبال -------------------
+def reception(request):
+    doctors = DoctorSchedule.objects.all()
+    return render(request, 'services/reception.html', {'doctors': doctors})
+
+
+# ------------------- صفحة المهام -------------------
+def tasks(request):
+    return render(request, 'services/tasks.html')
+
+
+# ------------------- صفحة الطوارئ -------------------
+def emergency(request):
+    return render(request, 'services/emergency.html')
+
+
+# ------------------- تعديل موعد باستخدام AJAX -------------------
+def edit_appointment(request):
+    if request.method == "POST":
+        appointment_id = request.POST.get("appointment_id")
+        appointment = Appointment.objects.get(id=appointment_id)
+        appointment.name = request.POST.get("patient_name")
+        appointment.date = request.POST.get("date")
+        appointment.time = request.POST.get("time")
+        appointment.phone = request.POST.get("phone")
+
+        appointment.save()
+        return JsonResponse({"success": True})
+    return JsonResponse({"success": False})
+
+
+# ------------------- إضافة موعد جديد باستخدام AJAX -------------------
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import Appointment, Patient, Doctor, Invoice, Payment
+
+def appointments_dashboard(request):
+    return render(request, 'appointments.html', {
+        'appointments': Appointment.objects.all(),
+        'doctors': Doctor.objects.all()
+    })
+from .models import Appointment, Doctor, Invoice, Payment, Patient
+from django.utils.crypto import get_random_string
+
+@csrf_exempt
+def add_appointment(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email', '')
+        doctor_id = request.POST.get('doctor')
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        message = request.POST.get('message', '')
+        paid_amount = float(request.POST.get('paid_amount', 0) or 0)
+
+        if not all([name, phone, doctor_id, date, time]):
+            return JsonResponse({'success': False, 'error': 'الحقول الأساسية ناقصة'})
+
+        # إنشاء الموعد
+        appointment = Appointment.objects.create(
+            name=name,
+            phone=phone,
+            doctor_id=doctor_id,
+            date=date,
+            time=time,
+            message=message
+        )
+
+        # إنشاء أو تحديث المريض
+        patient, created = Patient.objects.get_or_create(
+            phone=phone,  # يعتبر الهاتف معرف فريد
+            defaults={
+                'name': name,
+                'email': email,
+                'gender': 'غير محدد'  # إذا الحقل مطلوب
+            }
+        )
+        # إذا المريض موجود، ممكن تحديث الاسم والإيميل
+        if not created:
+            patient.name = name
+            patient.email = email
+            patient.save()
+
+        # إنشاء الفاتورة
+        invoice = Invoice.objects.create(
+            appointment=appointment,
+            number="INV-" + get_random_string(6).upper(),
+            total_amount=appointment.service_price,
+            paid_amount=paid_amount
+        )
+
+        # تسجيل الدفع إذا كان > 0
+        if paid_amount > 0:
+            Payment.objects.create(
+                invoice=invoice,
+                amount=paid_amount
+            )
+
+        return JsonResponse({'success': True})
+
+    return JsonResponse({'success': False, 'error': 'طريقة الطلب غير صحيحة'})
+
+# ------------------- صفحة الإحصائيات -------------------
+def stats_view(request):
+    today = timezone.localdate()
+    total_patients = Patient.objects.count()
+    visits_today = Appointment.objects.filter(created_at__date=today).count()
+    context = {
+        'total_patients': total_patients,
+        'visits_today': visits_today,
+    }
+    return render(request, 'services/statistics.html', context)
+
+
+# ------------------- صفحة الإشعارات -------------------
+def notifications_page(request):
+    notifications = Notification.objects.filter(is_active=True).order_by('-created_at')
+    return render(request, 'services/notifications.html', {'notifications': notifications})
+
+
+# ------------------- طباعة الفاتورة -------------------
+def print_invoice_view(request, invoice_id):
+    invoice = get_object_or_404(Invoice, id=invoice_id)
+    payments = invoice.payments.all()
+
+    context = {
+        'invoice': invoice,
+        'payments': payments,
+    }
+    return render(request, 'print_invoice.html', context)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Appointment
+
+@csrf_exempt
+def delete_appointment(request):
+    if request.method == "POST":
+        appointment_id = request.POST.get("appointment_id")
+
+        try:
+            appointment = Appointment.objects.get(id=appointment_id)
+            appointment.delete()
+            return JsonResponse({"success": True})
+        except Appointment.DoesNotExist:
+            return JsonResponse({"success": False})
+
+    return JsonResponse({"success": False})
+
+from django.shortcuts import render
+
+def price_list(request):
+    return render(request, 'services/price_list.html')
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+from .models import Invoice
+
+@csrf_exempt
+def update_paid(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        invoice_id = data.get('invoice_id')
+        paid_amount = data.get('paid_amount')
+
+        try:
+            invoice = Invoice.objects.get(id=invoice_id)
+            invoice.paid_amount = paid_amount
+            invoice.save()
+            return JsonResponse({'success': True, 'remaining_amount': float(invoice.remaining_amount)})
+        except Invoice.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'الفاتورة غير موجودة'})
+
+    return JsonResponse({'success': False, 'error': 'طريقة الطلب غير صحيحة'})
